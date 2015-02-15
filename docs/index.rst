@@ -5,10 +5,10 @@
 
 .. include:: ../README.rst
 
-
 .. toctree::
    :maxdepth: 2
 
+   design
 
 
 Indices and Search
