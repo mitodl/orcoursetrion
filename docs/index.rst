@@ -8,13 +8,14 @@
 .. toctree::
    :maxdepth: 2
 
+   command
    design
-
+   api
 
 Indices and Search
 ==================
 
-.. * :ref:`genindex`
-.. * :ref:`modindex`
+* :ref:`genindex`
+* :ref:`modindex`
 * :ref:`search`
 

@@ -1,5 +1,5 @@
-Orcoursetrion (a.k.a. Automatic Course Provisioning X)
-======================================================
+Design
+======
 
 Workflow, Design, And Architecture
 ----------------------------------

@@ -32,6 +32,8 @@ setup(
     install_requires=[
         'requests',
         ],
-    entry_points={},
+    entry_points={'console_scripts': [
+        'orcoursetrion = orcoursetrion.cmd:execute',
+    ]},
     zip_safe=True,
 )
