@@ -45,5 +45,7 @@ Configuration options
    :annotation: = Prefix to use in repository name
 
 .. autoattribute:: orcoursetrion.config.ORC_STUDIO_ORG
-   :annotation: = Organization to use for Export Repos
+   :annotation: = Organization to use for Studio export repos
 
+.. autoattribute:: orcoursetrion.config.ORC_STUDIO_DEPLOY_TEAM
+   :annotation: = Deployment team for Studio Export repos

@@ -3,12 +3,18 @@
 Test github actions and backing library
 """
 from functools import partial
+import json
 
 import httpretty
 import mock
 
 from orcoursetrion.actions import create_export_repo
-from orcoursetrion.lib import GitHub, GitHubRepoExists, GitHubUnknownError
+from orcoursetrion.lib import (
+    GitHub,
+    GitHubRepoExists,
+    GitHubUnknownError,
+    GitHubNoTeamFound
+)
 from orcoursetrion.tests.base import TestGithubBase
 
 
@@ -67,7 +73,7 @@ class TestGithub(TestGithubBase):
             )
 
     @httpretty.activate
-    def test_unknown_errors(self):
+    def test_lib_create_repo_unknown_errors(self):
         """Test what happens when we don't get expected status_codes
         """
 
@@ -113,15 +119,121 @@ class TestGithub(TestGithubBase):
                 self.ORG, self.TEST_REPO, self.TEST_DESCRIPTION
             )
 
+    @httpretty.activate
+    def test_lib_add_team_repo_success(self):
+        """Test what happens when we don't get expected status_codes
+        """
+
+        # Register for team list API
+        httpretty.register_uri(
+            httpretty.GET,
+            '{url}orgs/{org}/teams'.format(
+                url=self.URL,
+                org=self.ORG,
+            ),
+            body=partial(self.callback_team_list, more=True)
+        )
+        # Register for team repo add API
+        httpretty.register_uri(
+            httpretty.PUT,
+            '{url}teams/{id}/repos/{org}/{repo}'.format(
+                url=self.URL,
+                id=self.TEST_TEAM_ID,
+                org=self.ORG,
+                repo=self.TEST_REPO
+            ),
+            body=partial(self.callback_team_repo)
+        )
+
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        # This will raise on any failures
+        git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
+
+    @httpretty.activate
+    def test_lib_add_team_repo_no_teams(self):
+        """Test what happens when we don't have any teams
+        """
+
+        # Register for team list API
+        httpretty.register_uri(
+            httpretty.GET,
+            '{url}orgs/{org}/teams'.format(
+                url=self.URL,
+                org=self.ORG,
+            ),
+            body=partial(self.callback_team_list, status_code=404)
+        )
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        # See how we handle no teams
+        with self.assertRaisesRegexp(
+                GitHubUnknownError,
+                'No teams found in {0} organization'.format(self.ORG)
+        ):
+            git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
+
+    @httpretty.activate
+    def test_lib_add_team_repo_team_not_found(self):
+        """Test what happens when the team isn't in the org
+        """
+
+        # Register for team list API
+        httpretty.register_uri(
+            httpretty.GET,
+            '{url}orgs/{org}/teams'.format(
+                url=self.URL,
+                org=self.ORG,
+            ),
+            body=partial(self.callback_team_list)
+        )
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        with self.assertRaises(GitHubNoTeamFound):
+            git_hub.add_team_repo(self.ORG, self.TEST_REPO, 'foobar')
+
+    @httpretty.activate
+    @httpretty.activate
+    def test_lib_add_team_repo_fail(self):
+        """Test what happens when the repo can't be added to the team
+        """
+
+        # Register for team list API
+        httpretty.register_uri(
+            httpretty.GET,
+            '{url}orgs/{org}/teams'.format(
+                url=self.URL,
+                org=self.ORG,
+            ),
+            body=partial(self.callback_team_list)
+        )
+        # Register for team repo add API
+        httpretty.register_uri(
+            httpretty.PUT,
+            '{url}teams/{id}/repos/{org}/{repo}'.format(
+                url=self.URL,
+                id=self.TEST_TEAM_ID,
+                org=self.ORG,
+                repo=self.TEST_REPO
+            ),
+            body=partial(self.callback_team_repo, status_code=422)
+        )
+
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        with self.assertRaisesRegexp(GitHubUnknownError, json.dumps({
+                "message": "Validation Failed",
+        })):
+            git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
+
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
     def test_actions_create_export_repo_success(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
-        config.ORC_GH_API_URL = self.URL
+        # While we are at it, make sure we can handle configured
+        # github API urls that don't have a trailing slash.
+        config.ORC_GH_API_URL = self.URL[:-1]
         config.ORC_COURSE_PREFIX = self.TEST_PREFIX
         config.ORC_STUDIO_ORG = self.ORG
+        config.ORC_STUDIO_DEPLOY_TEAM = self.TEST_TEAM
 
         # Register for repo check
         httpretty.register_uri(
@@ -133,6 +245,7 @@ class TestGithub(TestGithubBase):
             ),
             body=self.callback_repo_check
         )
+        # Repo creation register
         httpretty.register_uri(
             httpretty.POST,
             '{url}orgs/{org}/repos'.format(
@@ -140,6 +253,26 @@ class TestGithub(TestGithubBase):
                 org=self.ORG,
             ),
             body=self.callback_repo_create
+        )
+        # Register for team list API
+        httpretty.register_uri(
+            httpretty.GET,
+            '{url}orgs/{org}/teams'.format(
+                url=self.URL,
+                org=self.ORG,
+            ),
+            body=partial(self.callback_team_list, more=True)
+        )
+        # Register for team repo add API
+        httpretty.register_uri(
+            httpretty.PUT,
+            '{url}teams/{id}/repos/{org}/{repo}'.format(
+                url=self.URL,
+                id=self.TEST_TEAM_ID,
+                org=self.ORG,
+                repo=self.TEST_REPO
+            ),
+            body=partial(self.callback_team_repo)
         )
 
         create_export_repo(
