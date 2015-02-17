@@ -32,9 +32,6 @@ templates_path = ['_templates']
 # The suffix of source filenames.
 source_suffix = '.rst'
 
-# The encoding of source files.
-#source_encoding = 'utf-8-sig'
-
 # The master toctree document.
 master_doc = 'index'
 
@@ -86,8 +83,8 @@ htmlhelp_basename = 'Orcoursetriondoc'
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'Orcoursetrion.tex', u'Orcoursetrion Documentation',
-   u'MIT Office of Digital Learning', 'manual'),
+    ('index', 'Orcoursetrion.tex', u'Orcoursetrion Documentation',
+     u'MIT Office of Digital Learning', 'manual'),
 ]
 
 # -- Options for manual page output ---------------------------------------
@@ -109,9 +106,12 @@ man_show_urls = True
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'Orcoursetrion', u'Orcoursetrion Documentation',
-     u'MIT Office of Digital Learning', 'Orcoursetrion', 'Automatic Course Provisioning.',
-     'Miscellaneous'),
+    (
+        'index', 'Orcoursetrion', u'Orcoursetrion Documentation',
+        u'MIT Office of Digital Learning', 'Orcoursetrion',
+        'Automatic Course Provisioning.',
+        'Miscellaneous'
+    ),
 ]
 
 

@@ -2,4 +2,14 @@
 """
 Orchestrion library
 """
-from orcoursetrion.lib.github import GitHub, GitHubRepoExists, GitHubUnknownError
+from orcoursetrion.lib.github import (
+    GitHub,
+    GitHubRepoExists,
+    GitHubUnknownError
+)
+
+__all__ = [
+    'GitHub',
+    'GitHubRepoExists',
+    'GitHubUnknownError',
+]
