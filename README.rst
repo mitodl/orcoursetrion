@@ -10,7 +10,7 @@ Quick Start
 
 To get started, clone the repository, and run ``pip install .`` or
 just install directory from github.com with ``pip install
-git+https://github.com/mitodl/orcourstrion``.
+git+https://github.com/mitodl/orcoursetrion``.
 
 Once installed, create or acquire an `OAUTH2 token from github
 <https://help.github.com/articles/creating-an-access-token-for-command-line-use/>`_.
