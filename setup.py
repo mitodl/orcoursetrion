@@ -18,10 +18,11 @@ setup(
     packages=find_packages(),
     package_data={},
     license='BSD Simplified',
-    author='Carson Gee',
-    author_email='x@carsongee.com',
-    url="http://github.com/carsongee/archelon",
-    description=("Client connected to archelonc for Web shell history"),
+    author='MIT Office of Digital Learning',
+    author_email='odl-engineering@mit.edu',
+    url="http://orcoursetrion.rtfd.com",
+    description=("Automatic course provisioning for the edx-platform using "
+                 "github and zendesk."),
     long_description=README,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
