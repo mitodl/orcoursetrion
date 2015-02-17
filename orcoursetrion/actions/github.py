@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Github based actions for orchestrion to take. i.e. "Create a studio course export
-repo", "Add course team to github", etc
+Github based actions for orchestrion to take. i.e. "Create a studio
+course export repo", "Add course team to github", etc
 """
 from orcoursetrion import config
-from orcoursetrion.lib import GitHub, GitHubRepoExists, GitHubUnknownError
+from orcoursetrion.lib import GitHub
+
 
 def create_export_repo(course, term, description=None):
     """Creates a course repo at
-    :py:const:`orcoursetrion.config.GH_API_URL` with key
-    :py:const:`orcoursetrion.config.GH_API_KEY` and at organization
-    :py:const:`orcoursetrion.config.STUDIO_ORG`.
+    :py:const:`~orcoursetrion.config.ORC_GH_API_URL` with key
+    :py:const:`~orcoursetrion.config.ORC_GH_OAUTH2_TOKEN` and at organization
+    :py:const:`~orcoursetrion.config.ORC_STUDIO_ORG`.
 
     Args:
         course (str): Course name to be used to name repo (i.e. 6.004r)
@@ -21,11 +22,11 @@ def create_export_repo(course, term, description=None):
                 (https://developer.github.com/v3/repos/#create)
     """
 
-    github = GitHub(config.GH_API_URL, config.GH_API_KEY)
+    github = GitHub(config.ORC_GH_API_URL, config.ORC_GH_OAUTH2_TOKEN)
     repo_name = '{prefix}-{course}-{term}'.format(
-        prefix=config.COURSE_PREFIX,
-        course=course.replace('.',''),
+        prefix=config.ORC_COURSE_PREFIX,
+        course=course.replace('.', ''),
         term=term
     )
-    repo = github.create_repo(config.STUDIO_ORG, repo_name, description)
+    repo = github.create_repo(config.ORC_STUDIO_ORG, repo_name, description)
     return repo

@@ -51,3 +51,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# For loading up local environment
+.env

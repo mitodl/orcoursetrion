@@ -26,6 +26,8 @@ API libraries.
     :show-inheritance:
     :imported-members:
 
+.. _configuration:
+
 Configuration
 =============
 
@@ -33,15 +35,15 @@ Configuration options
 
 .. automodule:: orcoursetrion.config
 
-.. autoattribute:: orcoursetrion.config.GH_API_KEY
-   :annotation: = GitHub API Key
+.. autoattribute:: orcoursetrion.config.ORC_GH_OAUTH2_TOKEN
+   :annotation: = GitHub OAUTH2 Token
 
-.. autoattribute:: orcoursetrion.config.GH_API_URL
+.. autoattribute:: orcoursetrion.config.ORC_GH_API_URL
    :annotation: = GitHub API URL
 
-.. autoattribute:: orcoursetrion.config.COURSE_PREFIX
+.. autoattribute:: orcoursetrion.config.ORC_COURSE_PREFIX
    :annotation: = Prefix to use in repository name
 
-.. autoattribute:: orcoursetrion.config.STUDIO_ORG
+.. autoattribute:: orcoursetrion.config.ORC_STUDIO_ORG
    :annotation: = Organization to use for Export Repos
 

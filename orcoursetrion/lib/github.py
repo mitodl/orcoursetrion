@@ -25,11 +25,11 @@ class GitHub(object):
 
         Args:
             api_url (str): Github API URL such as https://api.github.com/
-            api_key (str): Github API key for v3
+            api_key (str): Github OAUTH2 token for v3
         """
         self.api_url = api_url
         self.session = requests.Session()
-        # Add API key to session headers
+        # Add OAUTH2 token to session headers and set Agent
         self.session.headers = {
             'Authorization': 'token {0}'.format(api_key),
             'User-Agent': 'Orcoursetrion',
