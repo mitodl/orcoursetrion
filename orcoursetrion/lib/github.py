@@ -149,3 +149,40 @@ class GitHub(object):
         response = self.session.put(team_repo_url)
         if response.status_code != 204:
             raise GitHubUnknownError(response.text)
+
+    def add_web_hook(self, org, repo, url):
+        """Adds an active hook to a github repository.
+
+        This utilizes
+        https://developer.github.com/v3/repos/hooks/#create-a-hook to
+        create a form type Web hook that responds to push events
+        (basically all the defaults).
+
+        Args:
+            org (str): Organization to create the repo in.
+            repo (str): Name of the repo to create.
+            url (str): URL of the hook to add
+        Raises:
+            GitHubUnknownError
+            requests.RequestException
+        Returns:
+            dict: Github dictionary of a hook
+                (https://developer.github.com/v3/repos/hooks/#response-2)
+
+        """
+        hook_url = '{url}repos/{org}/{repo}/hooks'.format(
+            url=self.api_url,
+            org=org,
+            repo=repo
+        )
+        payload = {
+            'name': 'web',
+            'active': True,
+            'config': {
+                'url': url,
+            }
+        }
+        response = self.session.post(hook_url, json=payload)
+        if response.status_code != 201:
+            raise GitHubUnknownError(response.text)
+        return response.json()
