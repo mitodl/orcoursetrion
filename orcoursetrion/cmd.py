@@ -20,10 +20,8 @@ def run_create_export_repo(args):
 
 
 def execute():
-
     """Execute command line orchestrion actions.
     """
-
     parser = argparse.ArgumentParser(
         prog='orcoursetrion',
         description=('Run an orchestrion action.\n')
