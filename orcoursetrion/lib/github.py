@@ -19,19 +19,19 @@ class GitHub(object):
     """
     API class for handling calls to github
     """
-    def __init__(self, api_url, api_key):
+    def __init__(self, api_url, oauth2_token):
         """Initialize a requests session for use with this class by
         specifying the base API endpoint and key.
 
         Args:
             api_url (str): Github API URL such as https://api.github.com/
-            api_key (str): Github OAUTH2 token for v3
+            oauth2_token (str): Github OAUTH2 token for v3
         """
         self.api_url = api_url
         self.session = requests.Session()
         # Add OAUTH2 token to session headers and set Agent
         self.session.headers = {
-            'Authorization': 'token {0}'.format(api_key),
+            'Authorization': 'token {0}'.format(oauth2_token),
             'User-Agent': 'Orcoursetrion',
         }
 
