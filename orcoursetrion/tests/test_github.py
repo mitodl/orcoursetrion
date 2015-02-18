@@ -8,7 +8,7 @@ import json
 import httpretty
 import mock
 
-from orcoursetrion.actions import create_export_repo
+from orcoursetrion.actions import create_export_repo, create_xml_repo
 from orcoursetrion.lib import (
     GitHub,
     GitHubRepoExists,
@@ -221,6 +221,18 @@ class TestGithub(TestGithubBase):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, 'foobar')
 
     @httpretty.activate
+    def test_lib_add_team_repo_team_spaces_match(self):
+        """The API sometimes returns spaces in team names, so make sure we
+        still match when stripped.
+        """
+        self.register_team_list(self.callback_team_list)
+        self.register_team_repo_add(self.callback_team_repo)
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        # This will raise if we aren't stripping team names
+        git_hub.add_team_repo(
+            self.ORG, self.TEST_REPO, ' {0} '.format(self.TEST_TEAM)
+        )
+
     @httpretty.activate
     def test_lib_add_team_repo_fail(self):
         """Test what happens when the repo can't be added to the team
@@ -310,4 +322,74 @@ class TestGithub(TestGithubBase):
             self.TEST_COURSE,
             self.TEST_TERM,
             description=self.TEST_DESCRIPTION
+        )
+
+    @mock.patch('orcoursetrion.actions.github.config')
+    @httpretty.activate
+    def test_actions_create_xml_repo_success(self, config):
+        """Test the API call comes through as expected.
+        """
+        config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
+        config.ORC_GH_API_URL = self.URL
+        config.ORC_COURSE_PREFIX = self.TEST_PREFIX
+        config.ORC_XML_ORG = self.ORG
+        config.ORC_XML_DEPLOY_TEAM = self.TEST_TEAM
+        config.ORC_STAGING_GITRELOAD = self.TEST_STAGING_GR
+
+        # Register for repo check
+        httpretty.register_uri(
+            httpretty.GET,
+            '{url}repos/{org}/{repo}'.format(
+                url=self.URL,
+                org=self.ORG,
+                repo=self.TEST_REPO
+            ),
+            body=self.callback_repo_check
+        )
+        # Register repo create
+        httpretty.register_uri(
+            httpretty.POST,
+            '{url}orgs/{org}/repos'.format(
+                url=self.URL,
+                org=self.ORG,
+            ),
+            body=self.callback_repo_create
+        )
+        # Register for hook endpoint
+        httpretty.register_uri(
+            httpretty.POST,
+            '{url}repos/{org}/{repo}/hooks'.format(
+                url=self.URL,
+                org=self.ORG,
+                repo=self.TEST_REPO
+            ),
+            body=json.dumps({'id': 1}),
+            status=201
+        )
+        # Register for team list API
+        httpretty.register_uri(
+            httpretty.GET,
+            '{url}orgs/{org}/teams'.format(
+                url=self.URL,
+                org=self.ORG,
+            ),
+            body=partial(self.callback_team_list, more=True)
+        )
+        # Register for team repo add API
+        httpretty.register_uri(
+            httpretty.PUT,
+            '{url}teams/{id}/repos/{org}/{repo}'.format(
+                url=self.URL,
+                id=self.TEST_TEAM_ID,
+                org=self.ORG,
+                repo=self.TEST_REPO
+            ),
+            body=partial(self.callback_team_repo)
+        )
+
+        create_xml_repo(
+            self.TEST_COURSE,
+            self.TEST_TERM,
+            team=self.TEST_TEAM,
+            description=self.TEST_DESCRIPTION,
         )

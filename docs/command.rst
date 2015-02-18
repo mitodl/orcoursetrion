@@ -15,3 +15,19 @@ awesome class repo'`` you should see it respond with the URL of the
 repo that it just created for you.
 
 
+Available Actions
+=================
+
+:create_export_repo:
+
+   This will create a new repository with the content deployment team
+   from :py:attr:`~orcoursetrion.config.ORC_STUDIO_DEPLOY_TEAM` added to
+   the repository.
+
+:create_xml_repo:
+
+   This will create a new repository with the
+   :py:attr:`~orcoursetrion.config.ORC_XML_DEPLOY_TEAM` and a command
+   line specified team added to repository.  It will also set up a git
+   hook to the URL specified with
+   :py:attr:`~orcoursetrion.config.ORC_STAGING_GITRELOAD`.

@@ -49,3 +49,15 @@ Configuration options
 
 .. autoattribute:: orcoursetrion.config.ORC_STUDIO_DEPLOY_TEAM
    :annotation: = Deployment team for Studio Export repos
+
+.. autoattribute:: orcoursetrion.config.ORC_XML_ORG
+    :annotation: = Organization to use for XML/latex2edx courses
+
+.. autoattribute:: orcoursetrion.config.ORC_XML_DEPLOY_TEAM
+    :annotation: = Deployment team for XML/latex2edx courses
+
+.. autoattribute:: orcoursetrion.config.ORC_STAGING_GITRELOAD
+    :annotation: = `gitreload <https://github.com/mitodl/gitreload>`_
+                 server URL (including username and password) for the
+                 course development LMS.
+

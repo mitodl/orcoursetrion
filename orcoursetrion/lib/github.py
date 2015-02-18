@@ -134,7 +134,7 @@ class GitHub(object):
             raise GitHubUnknownError(
                 'No teams found in {0} organization'.format(org)
             )
-        found_team = [x for x in teams if x['name'] == team]
+        found_team = [x for x in teams if x['name'].strip() == team.strip()]
         if len(found_team) != 1:
             raise GitHubNoTeamFound(
                 '{0} not in list of teams for {1}'.format(team, org)
