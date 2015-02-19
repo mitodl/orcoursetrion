@@ -32,6 +32,15 @@ CONFIG_KEYS = [
 
     # Deployment team for studio
     ('ORC_STUDIO_DEPLOY_TEAM', 'mitx-studio-export'),
+
+    # Org to use for XML/latex2edx courses
+    ('ORC_XML_ORG', 'mitx'),
+
+    # Deployment team for XML/latex2edx
+    ('ORC_XML_DEPLOY_TEAM', 'mitx-content-deployment'),
+
+    # Web hook URL (including basic auth) for course development LMS
+    ('ORC_STAGING_GITRELOAD', None),
 ]
 for key in CONFIG_KEYS:
     value = primary_config.get(key[0], fallback_config.get(key, key[1]))
