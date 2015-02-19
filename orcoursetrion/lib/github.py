@@ -108,9 +108,9 @@ class GitHub(object):
         return repo_create_response.json()
 
     def add_team_repo(self, org, repo, team):
-        """Add an existing team (by name) to the repo and org specified.
+        """Add a repo to an existing team (by name) in the specified org.
 
-        We first look up the team get its ID
+        We first look up the team to get its ID
         (https://developer.github.com/v3/orgs/teams/#list-teams), and
         then add the repo to that team
         (https://developer.github.com/v3/orgs/teams/#add-team-repo).
