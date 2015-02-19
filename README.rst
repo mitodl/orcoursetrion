@@ -1,5 +1,22 @@
 Orcoursetrion (a.k.a. Automatic Course Provisioning X)
 ------------------------------------------------------
+.. image:: https://img.shields.io/travis/mitodl/orcoursetrion.svg
+    :target: https://travis-ci.org/mitodl/orcoursetrion
+.. image:: https://img.shields.io/coveralls/mitodl/orcoursetrion.svg
+    :target: https://coveralls.io/r/mitodl/orcoursetrion
+.. image:: https://img.shields.io/pypi/dm/orcoursetrion.svg
+    :target: https://pypi.python.org/pypi/orcoursetrion
+.. image:: https://img.shields.io/pypi/v/orcoursetrion.svg
+    :target: https://pypi.python.org/pypi/orcoursetrion
+.. image:: https://img.shields.io/github/issues/mitodl/orcoursetrion.svg
+    :target: https://github.com/mitodl/orcoursetrion/issues
+.. image:: https://img.shields.io/badge/license-BSD-blue.svg
+    :target: https://github.com/mitodl/orcoursetrion/blob/master/LICENSE
+.. image:: https://readthedocs.org/projects/orcoursetrion/badge/?version=latest
+    :target: http://orcoursetrion.rtfd.org/en/latest
+.. image:: https://readthedocs.org/projects/orcoursetrion/badge/?version=release
+    :target: http://orcoursetrion.rtfd.org/en/release
+
 
 Automatic course provisioning for the edx-platform using github and
 zendesk.

@@ -72,7 +72,7 @@ setup(
     license='BSD Simplified',
     author='MIT Office of Digital Learning',
     author_email='odl-engineering@mit.edu',
-    url="http://orcoursetrion.rtfd.com",
+    url="http://orcoursetrion.rtfd.org",
     description=("Automatic course provisioning for the edx-platform using "
                  "github and zendesk."),
     long_description=README,
