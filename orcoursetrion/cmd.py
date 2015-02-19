@@ -32,7 +32,7 @@ def run_create_xml_repo(args):
 
 
 def execute():
-    """Execute command line orchestrion actions.
+    """Execute command line orcoursetrion actions.
     """
     parser = argparse.ArgumentParser(
         prog='orcoursetrion',

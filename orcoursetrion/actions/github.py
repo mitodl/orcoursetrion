@@ -56,7 +56,8 @@ def create_xml_repo(course, term, team, description=None):
     Args:
         course (str): Course name to be used to name repo (i.e. 6.004r)
         term (str): Term the course is expected to run (i.e. 2015_Spring)
-        team (str): Name of the team to add read/write access to this repo.
+        team (str): Name of an organizational team that already exists to
+                    add read/write access to this repo.
         description (str): Optional description for repo to show up on github
     Returns:
         dict: Github dictionary of a repo
