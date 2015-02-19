@@ -73,6 +73,37 @@ class TestGithub(TestGithubBase):
             )
 
     @httpretty.activate
+    def test_lib_create_hook(self):
+        """Test valid hook creation"""
+
+        test_url = '{url}repos/{org}/{repo}/hooks'.format(
+            url=self.URL,
+            org=self.ORG,
+            repo=self.TEST_REPO
+        )
+        # Register for hook endpoint
+        httpretty.register_uri(
+            httpretty.POST,
+            test_url,
+            body=json.dumps({'id': 1}),
+            status=201
+        )
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        # Will raise if it is invalid
+        git_hub.add_web_hook(self.ORG, self.TEST_REPO, 'http://fluff')
+
+        # Setup for failure mode
+        error_body = json.dumps({u'message': u'Validation Failed'})
+        httpretty.register_uri(
+            httpretty.POST,
+            test_url,
+            body=error_body,
+            status=422
+        )
+        with self.assertRaisesRegexp(GitHubUnknownError, error_body):
+            git_hub.add_web_hook(self.ORG, self.TEST_REPO, 'http://fluff')
+
+    @httpretty.activate
     def test_lib_create_repo_unknown_errors(self):
         """Test what happens when we don't get expected status_codes
         """
