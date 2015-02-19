@@ -20,8 +20,11 @@ class TestGithubBase(unittest.TestCase):
     TEST_REPO = '{0}-{1}-{2}'.format(
         TEST_PREFIX, TEST_COURSE.replace('.', ''), TEST_TERM
     )
+    TEST_TEAM = 'Test-Deploy'
+    TEST_TEAM_ID = 1
 
     def callback_repo_check(self, request, uri, headers, status_code=404):
+        """Handle mocked API request for repo existence check."""
         self.assertEqual(
             request.headers['Authorization'],
             'token {0}'.format(self.OAUTH2_TOKEN)
@@ -29,6 +32,7 @@ class TestGithubBase(unittest.TestCase):
         return (status_code, headers, "testing")
 
     def callback_repo_create(self, request, uri, headers, status_code=201):
+        """Mock repo creation API call."""
         self.assertEqual(
             request.headers['Authorization'],
             'token {0}'.format(self.OAUTH2_TOKEN)
@@ -39,3 +43,54 @@ class TestGithubBase(unittest.TestCase):
         self.assertEqual(repo_dict['private'], True)
 
         return (status_code, headers, json.dumps({'html_url': 'testing'}))
+
+    def callback_team_list(
+            self, request, uri, headers, status_code=200, more=False
+    ):
+        """Mock team listing API call."""
+        self.assertEqual(
+            request.headers['Authorization'],
+            'token {0}'.format(self.OAUTH2_TOKEN)
+        )
+        page1 = [
+            {
+                'id': 1,
+                'name': self.TEST_TEAM
+            },
+        ]
+        page2 = [
+            {
+                'id': 2,
+                'name': 'Owners'
+            },
+        ]
+        current_page = request.querystring.get('page', [u'1'])
+        current_page = int(current_page[0])
+        if current_page == 2:
+            body = page2
+        else:
+            body = page1
+        if more and current_page == 1:
+            headers['Link'] = (
+                '<{uri}?page=2>; rel="next",'
+                '<{uri}?page=2>; rel="last"'
+            ).format(uri=uri)
+        return (status_code, headers, json.dumps(body))
+
+    def callback_team_repo(self, request, uri, headers, status_code=204):
+        """Mock adding a repo to a team API call."""
+        self.assertEqual(
+            request.headers['Authorization'],
+            'token {0}'.format(self.OAUTH2_TOKEN)
+        )
+        self.assertEqual('{url}teams/{id}/repos/{org}/{repo}'.format(
+            url=self.URL,
+            id=self.TEST_TEAM_ID,
+            org=self.ORG,
+            repo=self.TEST_REPO
+        ), uri)
+        if status_code == 422:
+            return (status_code, headers, json.dumps({
+                "message": "Validation Failed",
+            }))
+        return (status_code, headers, '')

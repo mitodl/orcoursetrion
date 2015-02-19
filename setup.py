@@ -59,6 +59,7 @@ class PyTest(test):
 
         pm = _pytest.config.get_plugin_manager()
         pm.consider_setuptools_entrypoints()
+        pm.config.option.color = True
         errno = pytest.main(self.test_args)
         sys.exit(errno)
 

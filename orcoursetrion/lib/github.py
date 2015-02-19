@@ -5,13 +5,23 @@ Github class for making needed API calls to github
 import requests
 
 
-class GitHubRepoExists(Exception):
+class GitHubException(Exception):
+    """Base exception class others inherit."""
+    pass
+
+
+class GitHubRepoExists(GitHubException):
     """Repo exists, and thus cannot be created."""
     pass
 
 
-class GitHubUnknownError(Exception):
+class GitHubUnknownError(GitHubException):
     """Unexpected status code exception"""
+    pass
+
+
+class GitHubNoTeamFound(GitHubException):
+    """Name team not found in list"""
     pass
 
 
@@ -28,12 +38,31 @@ class GitHub(object):
             api_key (str): Github OAUTH2 token for v3
         """
         self.api_url = api_url
+        if not api_url.endswith('/'):
+            self.api_url += '/'
         self.session = requests.Session()
         # Add OAUTH2 token to session headers and set Agent
         self.session.headers = {
             'Authorization': 'token {0}'.format(api_key),
             'User-Agent': 'Orcoursetrion',
         }
+
+    def _get_all(self, url):
+        """Return all results from URL given (i.e. page through them)
+
+        Args:
+            url(str): Full github URL with results.
+        Returns:
+            list: List of items returned.
+        """
+        results = None
+        response = self.session.get(url)
+        if response.status_code == 200:
+            results = response.json()
+            while response.links.get('next', False):
+                response = self.session.get(response.links['next']['url'])
+                results += response.json()
+        return results
 
     def create_repo(self, org, repo, description):
         """Creates a new github repository or raises exceptions
@@ -77,3 +106,46 @@ class GitHub(object):
         if repo_create_response.status_code != 201:
             raise GitHubUnknownError(repo_create_response.text)
         return repo_create_response.json()
+
+    def add_team_repo(self, org, repo, team):
+        """Add an existing team (by name) to the repo and org specified.
+
+        We first look up the team get its ID
+        (https://developer.github.com/v3/orgs/teams/#list-teams), and
+        then add the repo to that team
+        (https://developer.github.com/v3/orgs/teams/#add-team-repo).
+
+        Args:
+            org (str): Organization to create the repo in.
+            repo (str): Name of the repo to create.
+            team (str): Name of team to add.
+        Raises:
+            GitHubNoTeamFound
+            GitHubUnknownError
+            requests.RequestException
+
+        """
+        list_teams_url = '{url}orgs/{org}/teams'.format(
+            url=self.api_url,
+            org=org
+        )
+        teams = self._get_all(list_teams_url)
+        if not teams:
+            raise GitHubUnknownError(
+                'No teams found in {0} organization'.format(org)
+            )
+        found_team = [x for x in teams if x['name'] == team]
+        if len(found_team) != 1:
+            raise GitHubNoTeamFound(
+                '{0} not in list of teams for {1}'.format(team, org)
+            )
+        found_team = found_team[0]
+        team_repo_url = '{url}teams/{id}/repos/{org}/{repo}'.format(
+            url=self.api_url,
+            id=found_team['id'],
+            org=org,
+            repo=repo
+        )
+        response = self.session.put(team_repo_url)
+        if response.status_code != 204:
+            raise GitHubUnknownError(response.text)
