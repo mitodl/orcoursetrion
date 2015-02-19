@@ -5,6 +5,8 @@ Test base class with commonly used methods and variables
 import json
 import unittest
 
+import httpretty
+
 
 class TestGithubBase(unittest.TestCase):
     """Test Github actions and backing library."""
@@ -95,3 +97,71 @@ class TestGithubBase(unittest.TestCase):
                 "message": "Validation Failed",
             }))
         return (status_code, headers, '')
+
+    def register_repo_check(self, body):
+        """Register repo check URL and method."""
+        httpretty.register_uri(
+            httpretty.GET,
+            '{url}repos/{org}/{repo}'.format(
+                url=self.URL,
+                org=self.ORG,
+                repo=self.TEST_REPO
+            ),
+            body=body
+        )
+
+    def register_repo_create(self, body):
+        """Register url for repo create."""
+        httpretty.register_uri(
+            httpretty.POST,
+            '{url}orgs/{org}/repos'.format(
+                url=self.URL,
+                org=self.ORG,
+            ),
+            body=body
+        )
+
+    def register_hook_create(self, body, status):
+        """
+        Simple hook creation URL registration.
+        """
+        test_url = '{url}repos/{org}/{repo}/hooks'.format(
+            url=self.URL,
+            org=self.ORG,
+            repo=self.TEST_REPO
+        )
+        # Register for hook endpoint
+        httpretty.register_uri(
+            httpretty.POST,
+            test_url,
+            body=body,
+            status=status
+        )
+
+    def register_team_list(self, body):
+        """
+        Team listing API.
+        """
+        httpretty.register_uri(
+            httpretty.GET,
+            '{url}orgs/{org}/teams'.format(
+                url=self.URL,
+                org=self.ORG,
+            ),
+            body=body
+        )
+
+    def register_team_repo_add(self, body):
+        """
+        Register team repo addition.
+        """
+        httpretty.register_uri(
+            httpretty.PUT,
+            '{url}teams/{id}/repos/{org}/{repo}'.format(
+                url=self.URL,
+                id=self.TEST_TEAM_ID,
+                org=self.ORG,
+                repo=self.TEST_REPO
+            ),
+            body=body
+        )
