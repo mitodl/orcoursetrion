@@ -30,9 +30,9 @@ just install directory from github.com with ``pip install
 git+https://github.com/mitodl/orcoursetrion``.
 
 Once installed, create or acquire an `OAUTH2 token from github
-<https://help.github.com/articles/creating-an-access-token-for-command-line-use/>`_. That
-at least has the ``repo``, ``write:repo_hook``, and ``write:org``
-permissions.
+<https://help.github.com/articles/creating-an-access-token-for-command-line-use/>`_.
+That at least has the ``repo``, ``write:repo_hook``, ``admin:org``,
+and ``write:org`` permissions.
 
 Add the environment variable ``ORC_GH_OAUTH2_TOKEN=<your token>``
 to your environment, and run ``orcoursetrion --help`` for available

@@ -151,6 +151,104 @@ class TestGithub(TestGithubBase):
         })):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
 
+    @httpretty.activate
+    def test_lib_put_team_success_exists(self):
+        """Change team membership successfully for team that exists."""
+        team = ['archlight', 'ereshkigal']
+        member_changes = []
+        self.register_team_list(self.callback_team_list)
+        self.register_team_members(self.callback_team_members)
+        self.register_team_memberhip(
+            partial(self.callback_team_memberhip, action_list=member_changes)
+        )
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        git_hub.put_team(self.ORG, self.TEST_TEAM, True, team)
+        self.assertItemsEqual(
+            [
+                ('bizarnage', False),
+                ('chemistro', False),
+                ('dreadnought', False),
+                ('ereshkigal', True)
+            ],
+            member_changes
+        )
+
+    @httpretty.activate
+    def test_lib_put_team_create(self):
+        """Create a team with membership."""
+        member_changes = []
+        self.register_team_list(self.callback_team_list)
+        self.register_team_members(
+            partial(self.callback_team_members, members=[])
+        )
+        self.register_team_create(self.callback_team_create)
+        self.register_team_memberhip(
+            partial(self.callback_team_memberhip, action_list=member_changes)
+        )
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        git_hub.put_team(
+            self.ORG, 'New Team', True, self.TEST_TEAM_MEMBERS
+        )
+        self.assertItemsEqual(
+            [(unicode(x), True) for x in self.TEST_TEAM_MEMBERS],
+            member_changes
+        )
+
+    @httpretty.activate
+    def test_lib_put_team_create_permission(self):
+        """Create a team with membership."""
+        member_changes = []
+        self.register_team_list(self.callback_team_list)
+        self.register_team_members(
+            partial(self.callback_team_members, members=[])
+        )
+        self.register_team_memberhip(
+            partial(self.callback_team_memberhip, action_list=member_changes)
+        )
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+
+        # Verify permission is pull:
+        self.register_team_create(self.callback_team_create)
+        git_hub.put_team(
+            self.ORG, 'New Team', True, self.TEST_TEAM_MEMBERS
+        )
+        # Verify permission is push:
+        self.register_team_create(
+            partial(self.callback_team_create, read_only=False)
+        )
+        git_hub.put_team(
+            self.ORG, 'New Team', False, self.TEST_TEAM_MEMBERS
+        )
+
+    @httpretty.activate
+    def test_lib_put_team_creation_fail(self):
+        """Create a team with membership."""
+        self.register_team_list(self.callback_team_list)
+        self.register_team_create(
+            partial(self.callback_team_create, status_code=422)
+        )
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        with self.assertRaisesRegexp(
+                GitHubUnknownError, json.dumps({'id': 2})
+        ):
+            git_hub.put_team(
+                self.ORG, 'New Team', True, self.TEST_TEAM_MEMBERS
+            )
+
+    @httpretty.activate
+    def test_lib_put_team_membership_fail(self):
+        """Change team membership successfully for team that exists."""
+        self.register_team_list(self.callback_team_list)
+        self.register_team_members(self.callback_team_members)
+        self.register_team_memberhip(
+            partial(self.callback_team_memberhip, success=False)
+        )
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        with self.assertRaisesRegexp(
+                GitHubUnknownError, '^Failed to add or remove.+$'
+        ):
+            git_hub.put_team(self.ORG, self.TEST_TEAM, True, [])
+
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
     def test_actions_create_export_repo_success(self, config):
