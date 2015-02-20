@@ -83,7 +83,7 @@ setup(
         'Operating System :: POSIX :: Linux',
     ],
     install_requires=[
-        'requests',
+        'requests>=2.4.2',
         ],
     entry_points={'console_scripts': [
         'orcoursetrion = orcoursetrion.cmd:execute',
