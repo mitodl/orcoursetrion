@@ -22,13 +22,21 @@ def run_create_export_repo(args):
 def run_create_xml_repo(args):
     """Run the create_xml_repo action using args"""
     repo = actions.create_xml_repo(
-        args.course, args.term, args.team, args.description
+        args.course, args.term, args.team, args.member, args.description
     )
     print(
         'Newly created repository for XML course created at {0}'.format(
             repo['html_url']
         )
     )
+
+
+def run_put_team(args):
+    """Run the put_teams action using args"""
+    actions.put_team(
+        args.org, args.team, args.read_only, args.member
+    )
+    print('Team successfully modified/created.')
 
 
 def execute():
@@ -82,10 +90,38 @@ def execute():
         help='Name of team in organization that should have access'
     )
     create_xml_repo.add_argument(
+        '-m', '--member', nargs='*', type=str,
+        help='One or more usernames to replace the membership of the team'
+    )
+    create_xml_repo.add_argument(
         '-d', '--description', type=str,
         help='Description string to set for repository'
     )
     create_xml_repo.set_defaults(func=run_create_xml_repo)
+
+    # Create/Modify Team
+    put_team = subparsers.add_parser(
+        'put_team',
+        help='Create or modify a team in an organization'
+    )
+    put_team.add_argument(
+        '-o', '--org', type=str, required=True,
+        help='Organization for the team'
+    )
+    put_team.add_argument(
+        '-g', '--team', type=str, required=True,
+        help='Name of team in organization that should have access'
+    )
+    put_team.add_argument(
+        '-r', '--read_only', dest='read_only', action='store_true',
+        help='Team should only have pull access to repositories'
+    )
+
+    put_team.add_argument(
+        '-m', '--member', nargs='*', type=str,
+        help='One or more usernames to replace the membership of the team'
+    )
+    put_team.set_defaults(func=run_put_team)
 
     # Run the action
     args = parser.parse_args()
