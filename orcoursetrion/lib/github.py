@@ -190,20 +190,26 @@ class GitHub(object):
             org (str): Organization to create the repo in.
             team_name (str): Name of team to create.
             read_only (bool): If false, read/write, if true read_only.
-            members (list): List of github usernames to add to the team.
+            members (list): List of github usernames to add to the
+                              team. If none, membership changes won't occur
 
         Raises:
             GitHubUnknownError
             requests.RequestException
 
         Returns:
-            dict:: The team dictionary
+            dict: The team dictionary
                 (https://developer.github.com/v3/orgs/teams/#response-1)
+
         """
         try:
             team_dict = self._find_team(org, team_name)
         except GitHubNoTeamFound:
             team_dict = self._create_team(org, team_name, read_only)
+
+        # Just get the team and exit if no members are given
+        if members is None:
+            return team_dict
 
         # Have the team, now replace member list with the one we have
         members_url = '{url}teams/{id}/members'.format(

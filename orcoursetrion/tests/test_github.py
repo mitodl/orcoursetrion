@@ -8,7 +8,7 @@ import json
 import httpretty
 import mock
 
-from orcoursetrion.actions import create_export_repo, create_xml_repo
+from orcoursetrion.actions import create_export_repo, create_xml_repo, put_team
 from orcoursetrion.lib import (
     GitHub,
     GitHubRepoExists,
@@ -299,8 +299,69 @@ class TestGithub(TestGithubBase):
         )
 
         create_xml_repo(
-            self.TEST_COURSE,
-            self.TEST_TERM,
+            course=self.TEST_COURSE,
+            term=self.TEST_TERM,
             team=self.TEST_TEAM,
             description=self.TEST_DESCRIPTION,
+        )
+
+        # Now create repo with a new team
+        member_changes = []
+        member_list = ['fenris']
+        self.register_team_members(
+            partial(self.callback_team_members, members=[])
+        )
+        self.register_team_create(
+            partial(self.callback_team_create, read_only=False)
+        )
+        self.register_team_memberhip(
+            partial(self.callback_team_memberhip, action_list=member_changes)
+        )
+        create_xml_repo(
+            course=self.TEST_COURSE,
+            term=self.TEST_TERM,
+            team='Other Team',
+            members=member_list,
+            description=self.TEST_DESCRIPTION
+        )
+        self.assertItemsEqual(
+            [(unicode(x), True) for x in member_list],
+            member_changes
+        )
+
+    @mock.patch('orcoursetrion.actions.github.config')
+    @httpretty.activate
+    def test_actions_put_team_success(self, config):
+        """Test the API call comes through as expected.
+        """
+        config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
+        config.ORC_GH_API_URL = self.URL
+        config.ORC_COURSE_PREFIX = self.TEST_PREFIX
+        config.ORC_XML_ORG = self.ORG
+        config.ORC_XML_DEPLOY_TEAM = self.TEST_TEAM
+        config.ORC_STAGING_GITRELOAD = self.TEST_STAGING_GR
+
+        member_changes = []
+        self.register_team_list(
+            partial(self.callback_team_list, more=True)
+        )
+        self.register_team_members(
+            partial(self.callback_team_members, members=[])
+        )
+        self.register_team_create(
+            partial(self.callback_team_create, read_only=False)
+        )
+        self.register_team_memberhip(
+            partial(self.callback_team_memberhip, action_list=member_changes)
+        )
+
+        put_team(
+            org=self.ORG,
+            team=self.TEST_TEAM,
+            read_only=True,
+            members=self.TEST_TEAM_MEMBERS
+        )
+        self.assertItemsEqual(
+            [(unicode(x), True) for x in self.TEST_TEAM_MEMBERS],
+            member_changes
         )

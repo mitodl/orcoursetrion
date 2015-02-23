@@ -65,8 +65,8 @@ class TestGithubBase(unittest.TestCase):
         ]
         page2 = [
             {
-                'id': 2,
-                'name': 'Owners'
+                'id': 3,
+                'name': 'Other Team'
             },
         ]
         current_page = request.querystring.get('page', [u'1'])
@@ -126,18 +126,17 @@ class TestGithubBase(unittest.TestCase):
         get called multiple times in one library call.
         """
         username = uri.rsplit('/', 1)[1]
+        if not success:
+            status_code = 500
+
         if request.method == 'DELETE':
             if success:
                 status_code = 204
                 action_list.append((username, False))
-            else:
-                status_code = 500
         if request.method == 'PUT':
             if success:
                 status_code = 200
                 action_list.append((username, True))
-            else:
-                status_code = 422
         return (status_code, headers, '')
 
     def callback_team_repo(self, request, uri, headers, status_code=204):
@@ -146,12 +145,15 @@ class TestGithubBase(unittest.TestCase):
             request.headers['Authorization'],
             'token {0}'.format(self.OAUTH2_TOKEN)
         )
-        self.assertEqual('{url}teams/{id}/repos/{org}/{repo}'.format(
-            url=self.URL,
-            id=self.TEST_TEAM_ID,
-            org=self.ORG,
-            repo=self.TEST_REPO
-        ), uri)
+        self.assertIsNotNone(re.match(
+            '{url}teams/[13]/repos/{org}/{repo}'.format(
+                url=re.escape(self.URL),
+                id=self.TEST_TEAM_ID,
+                org=self.ORG,
+                repo=self.TEST_REPO
+            ),
+            uri
+        ))
         if status_code == 422:
             return (status_code, headers, json.dumps({
                 "message": "Validation Failed",
@@ -258,11 +260,10 @@ class TestGithubBase(unittest.TestCase):
         """
         httpretty.register_uri(
             httpretty.PUT,
-            '{url}teams/{id}/repos/{org}/{repo}'.format(
+            re.compile('^{url}teams/\d+/repos/{org}/{repo}$'.format(
                 url=self.URL,
-                id=self.TEST_TEAM_ID,
                 org=self.ORG,
                 repo=self.TEST_REPO
-            ),
+            )),
             body=body
         )
