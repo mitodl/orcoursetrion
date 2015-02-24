@@ -61,9 +61,14 @@ class GitHub(object):
         response = self.session.get(url)
         if response.status_code == 200:
             results = response.json()
-            while response.links.get('next', False):
+            while (
+                    response.links.get('next', False) and
+                    response.status_code == 200
+            ):
                 response = self.session.get(response.links['next']['url'])
                 results += response.json()
+        if response.status_code != 200:
+            raise GitHubUnknownError(response.text)
         return results
 
     def _find_team(self, org, team):
@@ -86,11 +91,10 @@ class GitHub(object):
             org=org
         )
         teams = self._get_all(list_teams_url)
-        if not teams:
-            raise GitHubUnknownError(
-                'No teams found in {0} organization'.format(org)
-            )
-        found_team = [x for x in teams if x['name'].strip() == team.strip()]
+        found_team = [
+            x for x in teams
+            if x['name'].strip().lower() == team.strip().lower()
+        ]
         if len(found_team) != 1:
             raise GitHubNoTeamFound(
                 '{0} not in list of teams for {1}'.format(team, org)

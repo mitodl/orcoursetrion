@@ -110,7 +110,7 @@ class TestGithub(TestGithubBase):
         # See how we handle no teams
         with self.assertRaisesRegexp(
                 GitHubUnknownError,
-                'No teams found in {0} organization'.format(self.ORG)
+                json.dumps({'error': 'error'})
         ):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
 
@@ -124,9 +124,10 @@ class TestGithub(TestGithubBase):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, 'foobar')
 
     @httpretty.activate
-    def test_lib_add_team_repo_team_spaces_match(self):
+    def test_lib_add_team_repo_team_spaces_case_match(self):
         """The API sometimes returns spaces in team names, so make sure we
-        still match when stripped.
+        still match when stripped. Additionally, be case insensitive
+        since github is.
         """
         self.register_team_list(self.callback_team_list)
         self.register_team_repo_add(self.callback_team_repo)
@@ -134,6 +135,10 @@ class TestGithub(TestGithubBase):
         # This will raise if we aren't stripping team names
         git_hub.add_team_repo(
             self.ORG, self.TEST_REPO, ' {0} '.format(self.TEST_TEAM)
+        )
+        # This will raise if we aren't doing lower()
+        git_hub.add_team_repo(
+            self.ORG, self.TEST_REPO, self.TEST_TEAM.upper()
         )
 
     @httpretty.activate
@@ -158,8 +163,8 @@ class TestGithub(TestGithubBase):
         member_changes = []
         self.register_team_list(self.callback_team_list)
         self.register_team_members(self.callback_team_members)
-        self.register_team_memberhip(
-            partial(self.callback_team_memberhip, action_list=member_changes)
+        self.register_team_membership(
+            partial(self.callback_team_membership, action_list=member_changes)
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
         git_hub.put_team(self.ORG, self.TEST_TEAM, True, team)
@@ -182,8 +187,8 @@ class TestGithub(TestGithubBase):
             partial(self.callback_team_members, members=[])
         )
         self.register_team_create(self.callback_team_create)
-        self.register_team_memberhip(
-            partial(self.callback_team_memberhip, action_list=member_changes)
+        self.register_team_membership(
+            partial(self.callback_team_membership, action_list=member_changes)
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
         git_hub.put_team(
@@ -202,8 +207,8 @@ class TestGithub(TestGithubBase):
         self.register_team_members(
             partial(self.callback_team_members, members=[])
         )
-        self.register_team_memberhip(
-            partial(self.callback_team_memberhip, action_list=member_changes)
+        self.register_team_membership(
+            partial(self.callback_team_membership, action_list=member_changes)
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
 
@@ -240,8 +245,8 @@ class TestGithub(TestGithubBase):
         """Change team membership successfully for team that exists."""
         self.register_team_list(self.callback_team_list)
         self.register_team_members(self.callback_team_members)
-        self.register_team_memberhip(
-            partial(self.callback_team_memberhip, success=False)
+        self.register_team_membership(
+            partial(self.callback_team_membership, success=False)
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
         with self.assertRaisesRegexp(
@@ -314,8 +319,8 @@ class TestGithub(TestGithubBase):
         self.register_team_create(
             partial(self.callback_team_create, read_only=False)
         )
-        self.register_team_memberhip(
-            partial(self.callback_team_memberhip, action_list=member_changes)
+        self.register_team_membership(
+            partial(self.callback_team_membership, action_list=member_changes)
         )
         create_xml_repo(
             course=self.TEST_COURSE,
@@ -351,8 +356,8 @@ class TestGithub(TestGithubBase):
         self.register_team_create(
             partial(self.callback_team_create, read_only=False)
         )
-        self.register_team_memberhip(
-            partial(self.callback_team_memberhip, action_list=member_changes)
+        self.register_team_membership(
+            partial(self.callback_team_membership, action_list=member_changes)
         )
 
         put_team(

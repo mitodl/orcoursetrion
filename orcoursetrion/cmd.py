@@ -116,7 +116,6 @@ def execute():
         '-r', '--read_only', dest='read_only', action='store_true',
         help='Team should only have pull access to repositories'
     )
-
     put_team.add_argument(
         '-m', '--member', nargs='*', type=str,
         help='One or more usernames to replace the membership of the team'

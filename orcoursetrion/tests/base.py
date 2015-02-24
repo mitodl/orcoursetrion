@@ -80,6 +80,8 @@ class TestGithubBase(unittest.TestCase):
                 '<{uri}?page=2>; rel="next",'
                 '<{uri}?page=2>; rel="last"'
             ).format(uri=uri)
+        if status_code == 404:
+            return (status_code, headers, json.dumps({'error': 'error'}))
         return (status_code, headers, json.dumps(body))
 
     def callback_team_members(
@@ -116,7 +118,7 @@ class TestGithubBase(unittest.TestCase):
             self.assertEqual(json_body['permission'], 'push')
         return (status_code, headers, json.dumps({'id': 2}))
 
-    def callback_team_memberhip(
+    def callback_team_membership(
             self, request, uri, headers, success=True, action_list=None
     ):
         """Manage both add and delete of team membership.
@@ -240,7 +242,7 @@ class TestGithubBase(unittest.TestCase):
             body=body
         )
 
-    def register_team_memberhip(self, body):
+    def register_team_membership(self, body):
         """
         Register adding and removing team members.
         """
