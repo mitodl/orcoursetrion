@@ -112,7 +112,7 @@ class GitHub(object):
         Raises:
             GitHubRepoExists
             GitHubUnknownError
-            requests.RequestException
+            requests.exceptions.RequestException
         Returns:
             dict: Github dictionary of a repo
                 (https://developer.github.com/v3/repos/#create)
@@ -273,7 +273,7 @@ class GitHub(object):
         Raises:
             GitHubNoTeamFound
             GitHubUnknownError
-            requests.RequestException
+            requests.exceptions.RequestException
 
         """
         found_team = self._find_team(org, team)
@@ -301,7 +301,7 @@ class GitHub(object):
             url (str): URL of the hook to add
         Raises:
             GitHubUnknownError
-            requests.RequestException
+            requests.exceptions.RequestException
         Returns:
             dict: Github dictionary of a hook
                 (https://developer.github.com/v3/repos/hooks/#response-2)
