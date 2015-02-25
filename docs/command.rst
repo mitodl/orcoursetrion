@@ -16,7 +16,7 @@ repo that it just created for you.
 
 
 Available Actions
-=================
+~~~~~~~~~~~~~~~~~
 
 :create_export_repo:
 
@@ -30,4 +30,14 @@ Available Actions
    :py:attr:`~orcoursetrion.config.ORC_XML_DEPLOY_TEAM` and a command
    line specified team added to repository.  It will also set up a git
    hook to the URL specified with
-   :py:attr:`~orcoursetrion.config.ORC_STAGING_GITRELOAD`.
+   :py:attr:`~orcoursetrion.config.ORC_STAGING_GITRELOAD`. The
+   membership of the team can also be specified, and will replace the
+   existing membership of the team if it already exists.
+
+:put_team:
+
+   This will create or update a team specified in the specified
+   organization.  If the team doesn't exist, there is an option to
+   give the team either push or pull access, otherwise the
+   ``read_only`` flag is ignored.  It optionally takes a list of
+   members of the team that should replace the existing team.
