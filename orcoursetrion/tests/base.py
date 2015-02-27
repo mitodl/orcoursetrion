@@ -31,6 +31,7 @@ class TestGithubBase(unittest.TestCase):
     TEST_TEAM_ID = 1
     TEST_TEAM_MEMBERS = ['archlight', 'bizarnage', 'chemistro', 'dreadnought']
     TEST_STAGING_GR = 'http://gr/'
+    TEST_PRODUCTION_GR = 'http://prod-gr/'
 
     def callback_repo_check(self, request, uri, headers, status_code=404):
         """Handle mocked API request for repo existence check."""

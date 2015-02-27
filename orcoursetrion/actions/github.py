@@ -62,6 +62,7 @@ def rerun_studio(course, term, new_term, description=None):
         description (str): Optional description for repo to show up on github
     Raises:
         requests.RequestException
+        orcoursetrion.lib.GitHubRepoDoesNotExist
         orcoursetrion.lib.GitHubUnknownError
     Returns:
         dict: Github dictionary of the newly created repo
@@ -91,6 +92,35 @@ def rerun_studio(course, term, new_term, description=None):
         config.ORC_STUDIO_ORG, repo_name, config.ORC_STUDIO_DEPLOY_TEAM
     )
     return repo
+
+
+def release_studio(course, term):
+    """Moves a studio course to be ready for production.
+
+    Currently this will just add a hook to the production server, but
+    it will eventually take care of everything else needed for a
+    transfer as well.
+
+    Args:
+        course (str): Course name of the repo to release to production
+                      (i.e. 6.001)
+        term (str): Term the course is currently running in (i.e. 2015_Spring)
+    Raises:
+        requests.RequestException
+        orcoursetrion.lib.GitHubUnknownError
+    Returns:
+        None: Nothing returned, raises on failure
+    """
+    github = GitHub(config.ORC_GH_API_URL, config.ORC_GH_OAUTH2_TOKEN)
+    repo_name = '{prefix}-{course}-{term}'.format(
+        prefix=config.ORC_COURSE_PREFIX,
+        course=course.replace('.', ''),
+        term=term
+    )
+    # Add the hook
+    github.add_web_hook(
+        config.ORC_STUDIO_ORG, repo_name, config.ORC_PRODUCTION_GITRELOAD
+    )
 
 
 def create_xml_repo(course, term, team, members=None, description=None):
@@ -177,6 +207,35 @@ def rerun_xml(course, term):
         term=term
     )
     return github.delete_web_hooks(config.ORC_XML_ORG, repo_name)
+
+
+def release_xml(course, term):
+    """Moves an XML course to be ready for production.
+
+    Currently this will just add a hook to the production server, but
+    it will eventually take care of everything else needed for a
+    transfer as well (i.e. making live branch, import it to lms...).
+
+    Args:
+        course (str): Course name of the repo to release to production
+                      (i.e. 6.001)
+        term (str): Term the course is currently running in (i.e. 2015_Spring)
+    Raises:
+        requests.RequestException
+        orcoursetrion.lib.GitHubUnknownError
+    Returns:
+        None: Nothing returned, raises on failure
+    """
+    github = GitHub(config.ORC_GH_API_URL, config.ORC_GH_OAUTH2_TOKEN)
+    repo_name = '{prefix}-{course}-{term}'.format(
+        prefix=config.ORC_COURSE_PREFIX,
+        course=course.replace('.', ''),
+        term=term
+    )
+    # Add the hook
+    github.add_web_hook(
+        config.ORC_XML_ORG, repo_name, config.ORC_PRODUCTION_GITRELOAD
+    )
 
 
 def put_team(org, team, read_only, members):

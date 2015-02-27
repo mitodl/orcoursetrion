@@ -41,6 +41,9 @@ CONFIG_KEYS = [
 
     # Web hook URL (including basic auth) for course development LMS
     ('ORC_STAGING_GITRELOAD', None),
+
+    # Web hook URL (including basic auth) for course production LMS
+    ('ORC_PRODUCTION_GITRELOAD', None),
 ]
 for key in CONFIG_KEYS:
     value = primary_config.get(key[0], fallback_config.get(key, key[1]))

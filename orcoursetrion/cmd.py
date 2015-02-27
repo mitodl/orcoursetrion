@@ -30,6 +30,12 @@ def run_rerun_studio(args):
     )
 
 
+def run_release_studio(args):
+    """Run the release_studio action using args"""
+    actions.release_studio(args.course, args.term)
+    print('Added production Web hooks to course')
+
+
 def run_create_xml_repo(args):
     """Run the create_xml_repo action using args"""
     repo = actions.create_xml_repo(
@@ -50,6 +56,12 @@ def run_rerun_xml(args):
             num_deleted_hooks
         )
     )
+
+
+def run_release_xml(args):
+    """Run the release_xml action using args"""
+    actions.release_xml(args.course, args.term)
+    print('Added production Web hooks to course')
 
 
 def run_put_team(args):
@@ -112,6 +124,21 @@ def execute():
     )
     rerun_studio.set_defaults(func=run_rerun_studio)
 
+    # Release Studio Course
+    release_studio = subparsers.add_parser(
+        'release_studio',
+        help='Release a Studio course (currently just add Web hooks)'
+    )
+    release_studio.add_argument(
+        '-c', '--course', type=str, required=True,
+        help='Course to work on (i.e. 6.0001)'
+    )
+    release_studio.add_argument(
+        '-t', '--term', type=str, required=True,
+        help='Term of the course (i.e. Spring_2015)'
+    )
+    release_studio.set_defaults(func=run_release_studio)
+
     # Create XML repository
     create_xml_repo = subparsers.add_parser(
         'create_xml_repo',
@@ -153,6 +180,21 @@ def execute():
         help='Term of the course (i.e. Spring_2015)'
     )
     rerun_xml.set_defaults(func=run_rerun_xml)
+
+    # Release XML Course
+    release_xml = subparsers.add_parser(
+        'release_xml',
+        help='Release an XML course (currently just adds Web hooks)'
+    )
+    release_xml.add_argument(
+        '-c', '--course', type=str, required=True,
+        help='Course to work on (i.e. 6.0001)'
+    )
+    release_xml.add_argument(
+        '-t', '--term', type=str, required=True,
+        help='Term of the course (i.e. Spring_2015)'
+    )
+    release_xml.set_defaults(func=run_release_xml)
 
     # Create/Modify Team
     put_team = subparsers.add_parser(
