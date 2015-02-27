@@ -19,6 +19,17 @@ def run_create_export_repo(args):
     )
 
 
+def run_rerun_studio(args):
+    """Run the rerun_studio action using args"""
+    repo = actions.rerun_studio(args.course, args.term, args.new_term)
+    print(
+        'Web hooks removed from old repository and newly created repository '
+        'for exports created at {0}'.format(
+            repo['html_url']
+        )
+    )
+
+
 def run_create_xml_repo(args):
     """Run the create_xml_repo action using args"""
     repo = actions.create_xml_repo(
@@ -27,6 +38,16 @@ def run_create_xml_repo(args):
     print(
         'Newly created repository for XML course created at {0}'.format(
             repo['html_url']
+        )
+    )
+
+
+def run_rerun_xml(args):
+    """Run the rerun_xml  action using args"""
+    num_deleted_hooks = actions.rerun_xml(args.course, args.term)
+    print(
+        "Successfully removed {0} hooks from course's repository.".format(
+            num_deleted_hooks
         )
     )
 
@@ -72,6 +93,25 @@ def execute():
     )
     create_export_repo.set_defaults(func=run_create_export_repo)
 
+    # Rerun Studio Course
+    rerun_studio = subparsers.add_parser(
+        'rerun_studio',
+        help='Rerun a Studio course'
+    )
+    rerun_studio.add_argument(
+        '-c', '--course', type=str, required=True,
+        help='Course to work on (i.e. 6.0001)'
+    )
+    rerun_studio.add_argument(
+        '-t', '--term', type=str, required=True,
+        help='Term of the course (i.e. Spring_2015)'
+    )
+    rerun_studio.add_argument(
+        '-n', '--new-term', type=str, required=True,
+        help='Term of the course (i.e. Spring_2015)'
+    )
+    rerun_studio.set_defaults(func=run_rerun_studio)
+
     # Create XML repository
     create_xml_repo = subparsers.add_parser(
         'create_xml_repo',
@@ -98,6 +138,21 @@ def execute():
         help='Description string to set for repository'
     )
     create_xml_repo.set_defaults(func=run_create_xml_repo)
+
+    # Rerun XML Course
+    rerun_xml = subparsers.add_parser(
+        'rerun_xml',
+        help='Rerun an XML course (currently just deletes Web hooks)'
+    )
+    rerun_xml.add_argument(
+        '-c', '--course', type=str, required=True,
+        help='Course to work on (i.e. 6.0001)'
+    )
+    rerun_xml.add_argument(
+        '-t', '--term', type=str, required=True,
+        help='Term of the course (i.e. Spring_2015)'
+    )
+    rerun_xml.set_defaults(func=run_rerun_xml)
 
     # Create/Modify Team
     put_team = subparsers.add_parser(

@@ -18,10 +18,14 @@ class TestGithubBase(unittest.TestCase):
 
     TEST_COURSE = 'devops.001'
     TEST_TERM = 'Spring_2999'
+    TEST_NEW_TERM = 'Spring_9999'
     TEST_DESCRIPTION = 'foo'
     TEST_PREFIX = 'testo'
     TEST_REPO = '{0}-{1}-{2}'.format(
         TEST_PREFIX, TEST_COURSE.replace('.', ''), TEST_TERM
+    )
+    TEST_RERUN_REPO = '{0}-{1}-{2}'.format(
+        TEST_PREFIX, TEST_COURSE.replace('.', ''), TEST_NEW_TERM
     )
     TEST_TEAM = 'Test-Deploy'
     TEST_TEAM_ID = 1
@@ -34,7 +38,10 @@ class TestGithubBase(unittest.TestCase):
             request.headers['Authorization'],
             'token {0}'.format(self.OAUTH2_TOKEN)
         )
-        return (status_code, headers, "testing")
+        # Handle the new "rerun" repo differently
+        if self.TEST_RERUN_REPO in uri:
+            status_code = 404
+        return (status_code, headers, json.dumps({'message': 'testing'}))
 
     def callback_repo_create(self, request, uri, headers, status_code=201):
         """Mock repo creation API call."""
@@ -43,7 +50,9 @@ class TestGithubBase(unittest.TestCase):
             'token {0}'.format(self.OAUTH2_TOKEN)
         )
         repo_dict = json.loads(request.body)
-        self.assertEqual(repo_dict['name'], self.TEST_REPO)
+        self.assertTrue(
+            repo_dict['name'] in [self.TEST_REPO, self.TEST_RERUN_REPO]
+        )
         self.assertEqual(repo_dict['description'], self.TEST_DESCRIPTION)
         self.assertEqual(repo_dict['private'], True)
 
@@ -148,11 +157,12 @@ class TestGithubBase(unittest.TestCase):
             'token {0}'.format(self.OAUTH2_TOKEN)
         )
         self.assertIsNotNone(re.match(
-            '{url}teams/[13]/repos/{org}/{repo}'.format(
+            '{url}teams/[13]/repos/{org}/({repo}|{rerun_repo})'.format(
                 url=re.escape(self.URL),
                 id=self.TEST_TEAM_ID,
                 org=self.ORG,
-                repo=self.TEST_REPO
+                repo=re.escape(self.TEST_REPO),
+                rerun_repo=re.escape(self.TEST_RERUN_REPO)
             ),
             uri
         ))
@@ -166,10 +176,13 @@ class TestGithubBase(unittest.TestCase):
         """Register repo check URL and method."""
         httpretty.register_uri(
             httpretty.GET,
-            '{url}repos/{org}/{repo}'.format(
-                url=self.URL,
-                org=self.ORG,
-                repo=self.TEST_REPO
+            re.compile(
+                '^{url}repos/{org}/({repo}|{repo_rerun})$'.format(
+                    url=self.URL,
+                    org=self.ORG,
+                    repo=re.escape(self.TEST_REPO),
+                    repo_rerun=re.escape(self.TEST_RERUN_REPO)
+                )
             ),
             body=body
         )
@@ -199,6 +212,48 @@ class TestGithubBase(unittest.TestCase):
             httpretty.POST,
             test_url,
             body=body,
+            status=status
+        )
+
+    def register_hook_list(self, body=None, status=200):
+        """
+        Simple hook list URL.
+        """
+        if body is None:
+            body = json.dumps(
+                [{
+                    'url': '{url}repos/{org}/{repo}/hooks/1'.format(
+                        url=self.URL, org=self.ORG, repo=self.TEST_REPO
+                    )
+                }]
+            )
+        test_url = '{url}repos/{org}/{repo}/hooks'.format(
+            url=self.URL,
+            org=self.ORG,
+            repo=self.TEST_REPO
+        )
+        # Register for hook endpoint
+        httpretty.register_uri(
+            httpretty.GET,
+            test_url,
+            body=body,
+            status=status
+        )
+
+    def register_hook_delete(self, status=204):
+        """
+        Simple hook list URL.
+        """
+        test_url = '{url}repos/{org}/{repo}/hooks/1'.format(
+            url=self.URL,
+            org=self.ORG,
+            repo=self.TEST_REPO
+        )
+        # Register for hook endpoint
+        httpretty.register_uri(
+            httpretty.DELETE,
+            test_url,
+            body='',
             status=status
         )
 
@@ -262,10 +317,13 @@ class TestGithubBase(unittest.TestCase):
         """
         httpretty.register_uri(
             httpretty.PUT,
-            re.compile('^{url}teams/\d+/repos/{org}/{repo}$'.format(
-                url=self.URL,
-                org=self.ORG,
-                repo=self.TEST_REPO
-            )),
+            re.compile(
+                '^{url}teams/\d+/repos/{org}/({repo}|{rerun_repo})$'.format(
+                    url=self.URL,
+                    org=self.ORG,
+                    repo=re.escape(self.TEST_REPO),
+                    rerun_repo=re.escape(self.TEST_RERUN_REPO)
+                )
+            ),
             body=body
         )

@@ -4,16 +4,24 @@ Test github actions and backing library
 """
 from functools import partial
 import json
+import re
 
 import httpretty
 import mock
 
-from orcoursetrion.actions import create_export_repo, create_xml_repo, put_team
+from orcoursetrion.actions import (
+    create_export_repo,
+    rerun_studio,
+    create_xml_repo,
+    put_team,
+    rerun_xml
+)
 from orcoursetrion.lib import (
     GitHub,
     GitHubRepoExists,
     GitHubUnknownError,
-    GitHubNoTeamFound
+    GitHubNoTeamFound,
+    GitHubRepoDoesNotExist
 )
 from orcoursetrion.tests.base import TestGithubBase
 
@@ -46,6 +54,23 @@ class TestGithub(TestGithubBase):
             git_hub.create_repo(
                 self.ORG, self.TEST_REPO, self.TEST_DESCRIPTION
             )
+
+    @httpretty.activate
+    def test_lib_get_all_bad_status(self):
+        """Test how we handle _get_all getting a bad status code"""
+        error = json.dumps({'error': 'error'})
+        test_url = '{url}repos/{org}/{repo}/hooks'.format(
+            url=self.URL,
+            org=self.ORG,
+            repo=self.TEST_REPO
+        )
+        self.register_hook_list(
+            body=error,
+            status=422
+        )
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        with self.assertRaisesRegexp(GitHubUnknownError, re.escape(error)):
+            git_hub._get_all(test_url)
 
     @httpretty.activate
     def test_lib_create_repo_unknown_errors(self):
@@ -89,6 +114,64 @@ class TestGithub(TestGithubBase):
             git_hub.add_web_hook(self.ORG, self.TEST_REPO, 'http://fluff')
 
     @httpretty.activate
+    def test_lib_delete_hook_fail(self):
+        """Test the deletion of hooks"""
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+
+        # Test where repo does not exist
+        self.register_repo_check(self.callback_repo_check)
+        with self.assertRaises(GitHubRepoDoesNotExist):
+            git_hub.delete_web_hooks(self.ORG, self.TEST_REPO)
+
+        self.register_repo_check(
+            partial(self.callback_repo_check, status_code=200)
+        )
+
+        # Test no hooks to delete
+        self.register_hook_list(status=404)
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        # Will raise if hooks are found since I haven't registered
+        # the hook delete URL.
+        num_deleted_hooks = git_hub.delete_web_hooks(self.ORG, self.TEST_REPO)
+        self.assertEqual(0, num_deleted_hooks)
+
+        # Set list to return on hook that we have registered for
+        # explicitly
+        self.register_hook_list(body=json.dumps(
+            [{
+                'url': '{url}repos/{org}/{repo}/hooks/1'.format(
+                    url=self.URL, org=self.ORG, repo=self.TEST_REPO
+                )
+            }]
+        ))
+        # Reregister ``repo_check`` 200
+        self.register_repo_check(
+            partial(self.callback_repo_check, status_code=200)
+        )
+        # Fail the deletion
+        self.register_hook_delete(status=422)
+        with self.assertRaisesRegexp(GitHubUnknownError, ''):
+            git_hub.delete_web_hooks(self.ORG, self.TEST_REPO)
+
+    @httpretty.activate
+    def test_lib_delete_hook_success(self):
+        """Test successful hook deletion."""
+        self.register_repo_check(
+            partial(self.callback_repo_check, status_code=200)
+        )
+        self.register_hook_list(body=json.dumps(
+            [{
+                'url': '{url}repos/{org}/{repo}/hooks/1'.format(
+                    url=self.URL, org=self.ORG, repo=self.TEST_REPO
+                )
+            }]
+        ))
+        self.register_hook_delete()
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        deleted_hooks = git_hub.delete_web_hooks(self.ORG, self.TEST_REPO)
+        self.assertEqual(1, deleted_hooks)
+
+    @httpretty.activate
     def test_lib_add_team_repo_success(self):
         """Test what happens when we don't get expected status_codes
         """
@@ -110,7 +193,7 @@ class TestGithub(TestGithubBase):
         # See how we handle no teams
         with self.assertRaisesRegexp(
                 GitHubUnknownError,
-                json.dumps({'error': 'error'})
+                "No teams found in org. This shouldn't happen"
         ):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
 
@@ -282,6 +365,35 @@ class TestGithub(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
+    def test_actions_rerun_studio_success(self, config):
+        """Test the API call comes through as expected.
+        """
+        config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
+        config.ORC_GH_API_URL = self.URL
+        config.ORC_COURSE_PREFIX = self.TEST_PREFIX
+        config.ORC_STUDIO_ORG = self.ORG
+        config.ORC_STUDIO_DEPLOY_TEAM = self.TEST_TEAM
+
+        self.register_repo_check(
+            partial(self.callback_repo_check, status_code=200)
+        )
+        self.register_repo_create(self.callback_repo_create)
+        self.register_team_list(
+            partial(self.callback_team_list, more=True)
+        )
+        self.register_team_repo_add(self.callback_team_repo)
+        self.register_hook_list()
+        self.register_hook_delete()
+
+        rerun_studio(
+            self.TEST_COURSE,
+            self.TEST_TERM,
+            self.TEST_NEW_TERM,
+            description=self.TEST_DESCRIPTION
+        )
+
+    @mock.patch('orcoursetrion.actions.github.config')
+    @httpretty.activate
     def test_actions_create_xml_repo_success(self, config):
         """Test the API call comes through as expected.
         """
@@ -333,6 +445,24 @@ class TestGithub(TestGithubBase):
             [(unicode(x), True) for x in member_list],
             member_changes
         )
+
+    @mock.patch('orcoursetrion.actions.github.config')
+    @httpretty.activate
+    def test_actions_rerun_xml_success(self, config):
+        """Test the API call comes through as expected.
+        """
+        config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
+        config.ORC_GH_API_URL = self.URL
+        config.ORC_COURSE_PREFIX = self.TEST_PREFIX
+        config.ORC_XML_ORG = self.ORG
+
+        self.register_repo_check(
+            partial(self.callback_repo_check, status_code=200)
+        )
+        self.register_hook_list()
+        self.register_hook_delete()
+        hooks_deleted = rerun_xml(self.TEST_COURSE, self.TEST_TERM)
+        self.assertEqual(1, hooks_deleted)
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
