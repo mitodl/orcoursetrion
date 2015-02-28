@@ -24,6 +24,12 @@ CONFIG_KEYS = [
     # GitHub API URL
     ('ORC_GH_API_URL', 'https://github.mit.edu/api/v3/'),
 
+    # GitHub Committer Name
+    ('ORC_GH_NAME', 'Orcoursetrion ODL'),
+
+    # GitHub Committer Email
+    ('ORC_GH_EMAIL', 'orcoursetrion@example.com'),
+
     # Course repo prefix
     ('ORC_COURSE_PREFIX', 'content-mit'),
 

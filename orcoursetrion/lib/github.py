@@ -3,8 +3,11 @@
 Github class for making needed API calls to github
 """
 from itertools import chain
+import shutil
+import tempfile
 
 import requests
+import sh
 
 
 class GitHubException(Exception):
@@ -390,3 +393,61 @@ class GitHub(object):
                 raise GitHubUnknownError(response.text)
             num_hooks_removed += 1
         return num_hooks_removed
+
+    def shallow_copy_repo(self, src_repo, dst_repo, committer, branch=None):
+        """Copies one branch repo's contents to a new repo in the same
+        organization without history.
+
+        .. DANGER::
+           This will overwrite the destination repo's default branch and
+           rewrite its history.
+
+        The basic workflow is:
+
+        - Clone source repo
+        - Remove source repo ``.git`` folder
+        - Initialize as new git repo
+        - Set identity
+        - Add everything and commit
+        - Force push to destination repo
+
+        Args:
+            src_repo (str): Full git url to source repo.
+            dst_repo (str): Full git url to destination repo.
+            committer (dict): {'name': ..., 'email': ...} for the name
+                and e-mail to use in the initial commit of the
+                destination repo.
+            branch (str): Option branch, if not specified default is used.
+        Raises:
+            sh.ErrorReturnCode
+        Returns:
+            None
+
+        """
+        CLONE_DIR = 'cloned_repo'
+        # Grab current working directoy so we return after we are done
+        cwd = unicode(sh.pwd().rstrip('\n'))
+        tmp_dir = tempfile.mkdtemp(prefix='orc_git')
+        try:
+            sh.cd(tmp_dir)
+            if branch is None:
+                sh.git.clone(src_repo, CLONE_DIR, depth=1)
+            else:
+                sh.git.clone(src_repo, CLONE_DIR, depth=1, branch=branch)
+
+            sh.cd(CLONE_DIR)
+            shutil.rmtree('.git')
+            sh.git.init()
+            sh.git.config('user.email', committer['email'])
+            sh.git.config('user.name', committer['name'])
+            sh.git.remote.add.origin(dst_repo)
+            sh.git.add('.')
+            sh.git.commit(
+                m='Initial rerun copy by Orcoursetrion from {0}'.format(
+                    src_repo
+                )
+            )
+            sh.git.push.origin.master(f=True)
+        finally:
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+            sh.cd(cwd)
