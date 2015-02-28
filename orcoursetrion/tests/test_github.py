@@ -4,10 +4,14 @@ Test github actions and backing library
 """
 from functools import partial
 import json
+import os
 import re
+import shutil
+import tempfile
 
 import httpretty
 import mock
+import sh
 
 from orcoursetrion.actions import (
     create_export_repo,
@@ -193,7 +197,7 @@ class TestGithub(TestGithubBase):
         # See how we handle no teams
         with self.assertRaisesRegexp(
                 GitHubUnknownError,
-                "No teams found in org. This shouldn't happen"
+                re.escape("No teams found in org. This shouldn't happen")
         ):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
 
@@ -336,6 +340,132 @@ class TestGithub(TestGithubBase):
                 GitHubUnknownError, '^Failed to add or remove.+$'
         ):
             git_hub.put_team(self.ORG, self.TEST_TEAM, True, [])
+
+    def test_lib_copy_repo(self):
+        """Verify that we can do a single commit, single branch copy of a
+        repo."""
+
+        from orcoursetrion import config
+
+        commit_1 = 'hello'
+        commit_2 = 'world'
+        branch = 'foo'
+
+        SRC_REPO = 'Thing1'
+        DST_REPO = 'Thing2'
+
+        prefix = 'orc_git_test'
+
+        # Create directories to use.
+
+        # Note: If you are getting weird errors about ``[No such file
+        # or directory]: getcwd()`` when this test fails and you are
+        # debugging, disable the cleanup here. Even with the cleanup
+        # of changing the working directory below, pytest seems to run
+        # and the working directory is the tmp directories we nuked in
+        # cleanup.
+        tmp_dir_src = tempfile.mkdtemp(prefix=prefix)
+        self.addCleanup(shutil.rmtree, tmp_dir_src)
+        tmp_dir_dst = tempfile.mkdtemp(prefix=prefix)
+        self.addCleanup(shutil.rmtree, tmp_dir_dst)
+
+        # Add cleanup to return to where we came from
+        cwd = unicode(sh.pwd().rstrip('\n'))
+
+        self.addCleanup(sh.cd, cwd)
+
+        # Create a base repo with some commits, then
+        # Run the copy and verify the results
+        sh.cd(tmp_dir_src)
+        sh.mkdir(SRC_REPO)
+        sh.cd(SRC_REPO)
+        git = sh.git.bake(_cwd=os.path.join(tmp_dir_src, SRC_REPO))
+        git.init()
+        git.config('user.email', config.ORC_GH_EMAIL)
+        git.config('user.name', config.ORC_GH_NAME)
+        for commit in [commit_1, commit_2]:
+            with open('test', 'w') as test_file:
+                test_file.write(commit)
+            git.add('.')
+            git.commit(m=commit_2)
+
+        # Also create a branch to test branches
+        git.checkout('-b', branch)
+        with open('test', 'w') as test_file:
+            test_file.write(branch)
+        git.add('.')
+        git.commit(m=branch)
+
+        git.checkout('master')
+
+        # Now create the initial bare repo at the destination
+        sh.cd(tmp_dir_dst)
+        sh.mkdir(DST_REPO)
+        sh.cd(DST_REPO)
+        sh.git.init(bare=True)
+
+        # Alright, run the copy and verify the expected commit
+        # message, and that the test file has the last commit string
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        src_repo_url = 'file://{0}'.format(os.path.join(tmp_dir_src, SRC_REPO))
+        dst_repo_url = 'file://{0}'.format(os.path.join(tmp_dir_dst, DST_REPO))
+
+        git_hub.shallow_copy_repo(
+            src_repo_url,
+            dst_repo_url,
+            {'email': config.ORC_GH_EMAIL, 'name': config.ORC_GH_NAME}
+        )
+
+        # Verify things are looking right.
+        sh.cd(tmp_dir_dst)
+        # Clone bare destination repo and verify contents
+        DST_REPO_CLONE = 'cloned'
+        sh.git.clone(dst_repo_url, DST_REPO_CLONE)
+        sh.cd(DST_REPO_CLONE)
+
+        # Assert file is as expected
+        with open('test', 'r') as test_file:
+            self.assertEqual(commit_2, test_file.read())
+        git_log = sh.git.log(
+            '-1', format='%s', _tty_out=False
+        ).rstrip('\n')
+
+        # Assert commit message is correct
+        self.assertEqual(
+            git_log,
+            'Initial rerun copy by Orcoursetrion from {0}'.format(src_repo_url)
+        )
+
+        # Assert author is correct
+        git_log = sh.git.log(
+            '-1', format='%cn', _tty_out=False
+        ).rstrip('\n')
+        self.assertEqual(git_log, config.ORC_GH_NAME)
+        git_log = sh.git.log(
+            '-1', format='%ce', _tty_out=False
+        ).rstrip('\n')
+        self.assertEqual(git_log, config.ORC_GH_EMAIL)
+
+        # Delete old clone and run it with a different branch
+        sh.cd(tmp_dir_dst)
+        shutil.rmtree(DST_REPO_CLONE)
+        git_hub.shallow_copy_repo(
+            src_repo_url,
+            dst_repo_url,
+            {'email': config.ORC_GH_EMAIL, 'name': config.ORC_GH_NAME},
+            branch=branch
+        )
+
+        # Verify things are looking right in the branch clone
+        sh.cd(tmp_dir_dst)
+        # Clone bare destination repo and verify contents
+        DST_REPO_CLONE = 'cloned'
+        sh.git.clone(dst_repo_url, DST_REPO_CLONE)
+        sh.cd(DST_REPO_CLONE)
+
+        # Assert file is as expected
+        with open('test', 'r') as test_file:
+            self.assertEqual(branch, test_file.read())
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate

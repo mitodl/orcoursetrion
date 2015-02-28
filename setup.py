@@ -84,6 +84,7 @@ setup(
     ],
     install_requires=[
         'requests>=2.4.2',
+        'sh>=1.11',
         ],
     entry_points={'console_scripts': [
         'orcoursetrion = orcoursetrion.cmd:execute',

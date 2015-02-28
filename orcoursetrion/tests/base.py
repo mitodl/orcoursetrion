@@ -145,9 +145,8 @@ class TestGithubBase(unittest.TestCase):
                 status_code = 204
                 action_list.append((username, False))
         if request.method == 'PUT':
-            if success:
-                status_code = 200
-                action_list.append((username, True))
+            status_code = 200
+            action_list.append((username, True))
         return (status_code, headers, '')
 
     def callback_team_repo(self, request, uri, headers, status_code=204):

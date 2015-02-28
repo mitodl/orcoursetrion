@@ -41,6 +41,12 @@ Configuration options
 .. autoattribute:: orcoursetrion.config.ORC_GH_API_URL
    :annotation: = GitHub API URL
 
+.. autoattribute:: orcoursetrion.config.ORC_GH_NAME
+    :annotation: = Git committer name to use.
+
+.. autoattribute:: orcoursetrion.config.ORC_GH_EMAIL
+    :annotation: = Git committer e-mail to use
+
 .. autoattribute:: orcoursetrion.config.ORC_COURSE_PREFIX
    :annotation: = Prefix to use in repository name
 
