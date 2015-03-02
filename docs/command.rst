@@ -24,6 +24,12 @@ Available Actions
    from :py:attr:`~orcoursetrion.config.ORC_STUDIO_DEPLOY_TEAM` added to
    the repository.
 
+:rerun_studio:
+
+   This will remove all Web hooks from the course specified by
+   ``term`` and then create a new repo with the ``new_term``, along
+   with the :py:attr:`~orcoursetrion.config.ORC_STUDIO_DEPLOY_TEAM` added.
+
 :create_xml_repo:
 
    This will create a new repository with the
@@ -33,6 +39,11 @@ Available Actions
    :py:attr:`~orcoursetrion.config.ORC_STAGING_GITRELOAD`. The
    membership of the team can also be specified, and will replace the
    existing membership of the team if it already exists.
+
+:rerun_xml:
+
+   This will rerun an XML course.  Currently this will just remove any
+   Web hooks that are currently attached to the repository.
 
 :put_team:
 

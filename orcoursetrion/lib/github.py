@@ -17,6 +17,11 @@ class GitHubRepoExists(GitHubException):
     pass
 
 
+class GitHubRepoDoesNotExist(GitHubException):
+    """Repo does not exist, and therefore actions can't be taken on it."""
+    pass
+
+
 class GitHubUnknownError(GitHubException):
     """Unexpected status code exception"""
     pass
@@ -67,9 +72,36 @@ class GitHub(object):
             ):
                 response = self.session.get(response.links['next']['url'])
                 results += response.json()
-        if response.status_code != 200:
+        if response.status_code not in [200, 404]:
             raise GitHubUnknownError(response.text)
         return results
+
+    def _get_repo(self, org, repo):
+        """Either return the repo dictionary, or None if it doesn't exists.
+
+        Args:
+            org (str): Organization the repo lives in.
+            repo (str): The name of the repo.
+        Raises:
+            requests.exceptions.RequestException
+            GitHubUnknownError
+        Returns:
+            dict or None: Repo dictionary from github
+                (https://developer.github.com/v3/repos/#get) or None if it
+                doesn't exist.
+        """
+        repo_url = '{url}repos/{org}/{repo}'.format(
+            url=self.api_url,
+            org=org,
+            repo=repo
+        )
+
+        # Try and get the URL, if it 404's we are good, otherwise raise
+        repo_response = self.session.get(repo_url)
+        if repo_response.status_code == 200:
+            return repo_response.json()
+        if repo_response.status_code != 404:
+            raise GitHubUnknownError(repo_response.text)
 
     def _find_team(self, org, team):
         """Find a team in an org by name, or raise.
@@ -91,6 +123,10 @@ class GitHub(object):
             org=org
         )
         teams = self._get_all(list_teams_url)
+        if not teams:
+            raise GitHubUnknownError(
+                "No teams found in org. This shouldn't happen"
+            )
         found_team = [
             x for x in teams
             if x['name'].strip().lower() == team.strip().lower()
@@ -118,17 +154,9 @@ class GitHub(object):
                 (https://developer.github.com/v3/repos/#create)
 
         """
-        repo_url = '{url}repos/{org}/{repo}'.format(
-            url=self.api_url,
-            org=org,
-            repo=repo
-        )
-        # Try and get the URL, if it 404's we are good, otherwise raise
-        repo_response = self.session.get(repo_url)
-        if repo_response.status_code == 200:
+        repo_dict = self._get_repo(org, repo)
+        if repo_dict is not None:
             raise GitHubRepoExists('This repository already exists')
-        if repo_response.status_code != 404:
-            raise GitHubUnknownError(repo_response.text)
 
         # Everything looks clean, create the repo.
         create_url = '{url}orgs/{org}/repos'.format(
@@ -221,6 +249,7 @@ class GitHub(object):
             id=team_dict['id']
         )
         existing_members = self._get_all(members_url)
+
         # Filter list of dicts down to just username list
         existing_members = [x['login'] for x in existing_members]
 
@@ -297,8 +326,8 @@ class GitHub(object):
 
         Args:
             org (str): Organization to create the repo in.
-            repo (str): Name of the repo to create.
-            url (str): URL of the hook to add
+            repo (str): Name of the repo the hook will live in.
+            url (str): URL of the hook to add.
         Raises:
             GitHubUnknownError
             requests.exceptions.RequestException
@@ -323,3 +352,41 @@ class GitHub(object):
         if response.status_code != 201:
             raise GitHubUnknownError(response.text)
         return response.json()
+
+    def delete_web_hooks(self, org, repo):
+        """Delete all the Web hooks for a repository
+
+        Uses https://developer.github.com/v3/repos/hooks/#list-hooks
+        to get a list of all hooks, and then runs
+        https://developer.github.com/v3/repos/hooks/#delete-a-hook
+        to remove each of them.
+        Args:
+            org (str): Organization to create the repo in.
+            repo (str): Name of the repo to remove hooks from.
+        Raises:
+            GitHubUnknownError
+            GitHubRepoDoesNotExist
+            requests.exceptions.RequestException
+        Returns:
+            int: Number of hooks removed
+
+        """
+        # Verify the repo exists first
+        repo_dict = self._get_repo(org, repo)
+        if repo_dict is None:
+            raise GitHubRepoDoesNotExist(
+                'Repo does not exist. Cannot remove hooks'
+            )
+        url = '{url}repos/{org}/{repo}/hooks'.format(
+            url=self.api_url,
+            org=org,
+            repo=repo
+        )
+        hooks = self._get_all(url)
+        num_hooks_removed = 0
+        for hook in hooks or []:
+            response = self.session.delete(hook['url'])
+            if response.status_code != 204:
+                raise GitHubUnknownError(response.text)
+            num_hooks_removed += 1
+        return num_hooks_removed

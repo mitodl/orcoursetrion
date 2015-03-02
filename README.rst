@@ -25,8 +25,11 @@ zendesk.
 Quick Start
 ===========
 
-To get started, clone the repository, and run ``pip install .`` or
-just install directory from github.com with ``pip install
+To install the latest release, run ``pip install orcoursetrion``.
+
+If you want to be on the development edge (generally stable), clone
+the repository, and run ``pip install .`` or just install directory
+from github.com with ``pip install
 git+https://github.com/mitodl/orcoursetrion``.
 
 Once installed, create or acquire an `OAUTH2 token from github
