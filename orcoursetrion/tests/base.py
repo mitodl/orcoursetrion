@@ -46,6 +46,9 @@ class TestGithubBase(unittest.TestCase):
 
     def callback_repo_create(self, request, uri, headers, status_code=201):
         """Mock repo creation API call."""
+        # Disabling unused-argument because this is a callback with
+        # required method signature.
+        # pylint: disable=unused-argument
         self.assertEqual(
             request.headers['Authorization'],
             'token {0}'.format(self.OAUTH2_TOKEN)
@@ -63,6 +66,8 @@ class TestGithubBase(unittest.TestCase):
             self, request, uri, headers, status_code=200, more=False
     ):
         """Mock team listing API call."""
+        # All arguments needed for tests
+        # pylint: disable=too-many-arguments
         self.assertEqual(
             request.headers['Authorization'],
             'token {0}'.format(self.OAUTH2_TOKEN)
@@ -96,11 +101,16 @@ class TestGithubBase(unittest.TestCase):
 
     def callback_team_members(
             self, request, uri, headers,
-            status_code=200, members=TEST_TEAM_MEMBERS
+            status_code=200, members=None
     ):
         """
         Return team membership list
         """
+        # Disabling unused-argument because this is a callback with
+        # required method signature.
+        # pylint: disable=unused-argument,too-many-arguments
+        if members is None:
+            members = self.TEST_TEAM_MEMBERS
         self.assertEqual(
             request.headers['Authorization'],
             'token {0}'.format(self.OAUTH2_TOKEN)
@@ -115,6 +125,9 @@ class TestGithubBase(unittest.TestCase):
         """
         Create a new team as requested
         """
+        # Disabling unused-argument because this is a callback with
+        # required method signature.
+        # pylint: disable=unused-argument,too-many-arguments
         self.assertEqual(
             request.headers['Authorization'],
             'token {0}'.format(self.OAUTH2_TOKEN)
@@ -128,8 +141,9 @@ class TestGithubBase(unittest.TestCase):
             self.assertEqual(json_body['permission'], 'push')
         return (status_code, headers, json.dumps({'id': 2}))
 
+    @staticmethod
     def callback_team_membership(
-            self, request, uri, headers, success=True, action_list=None
+        request, uri, headers, success=True, action_list=None
     ):
         """Manage both add and delete of team membership.
 
@@ -137,6 +151,8 @@ class TestGithubBase(unittest.TestCase):
         ``added (bool)``) to track state of membership since this will
         get called multiple times in one library call.
         """
+        # pylint: disable=too-many-arguments
+
         username = uri.rsplit('/', 1)[1]
         if not success:
             status_code = 500
@@ -159,7 +175,6 @@ class TestGithubBase(unittest.TestCase):
         self.assertIsNotNone(re.match(
             '{url}teams/[13]/repos/{org}/({repo}|{rerun_repo})'.format(
                 url=re.escape(self.URL),
-                id=self.TEST_TEAM_ID,
                 org=self.ORG,
                 repo=re.escape(self.TEST_REPO),
                 rerun_repo=re.escape(self.TEST_RERUN_REPO)
@@ -290,7 +305,7 @@ class TestGithubBase(unittest.TestCase):
         httpretty.register_uri(
             httpretty.GET,
             re.compile(
-                '^{url}teams/\d+/members$'.format(
+                r'^{url}teams/\d+/members$'.format(
                     url=re.escape(self.URL)
                 )
             ),
@@ -301,7 +316,7 @@ class TestGithubBase(unittest.TestCase):
         """
         Register adding and removing team members.
         """
-        url_regex = re.compile('^{url}teams/\d+/memberships/\w+$'.format(
+        url_regex = re.compile(r'^{url}teams/\d+/memberships/\w+$'.format(
             url=re.escape(self.URL),
         ))
         httpretty.register_uri(
@@ -318,7 +333,7 @@ class TestGithubBase(unittest.TestCase):
         httpretty.register_uri(
             httpretty.PUT,
             re.compile(
-                '^{url}teams/\d+/repos/{org}/({repo}|{rerun_repo})$'.format(
+                r'^{url}teams/\d+/repos/{org}/({repo}|{rerun_repo})$'.format(
                     url=self.URL,
                     org=self.ORG,
                     repo=re.escape(self.TEST_REPO),
