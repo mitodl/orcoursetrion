@@ -30,6 +30,11 @@ Available Actions
    ``term`` and then create a new repo with the ``new_term``, along
    with the :py:attr:`~orcoursetrion.config.ORC_STUDIO_DEPLOY_TEAM` added.
 
+:release_studio:
+
+   This will add the production git Web hook to the course specified
+   with :py:attr:`~orcoursetrion.config.ORC_PRODUCTION_GITRELOAD`.
+
 :create_xml_repo:
 
    This will create a new repository with the
@@ -44,6 +49,11 @@ Available Actions
 
    This will rerun an XML course.  Currently this will just remove any
    Web hooks that are currently attached to the repository.
+
+:release_xml:
+
+   This will add the production git Web hook to the course specified
+   with :py:attr:`~orcoursetrion.config.ORC_PRODUCTION_GITRELOAD`.
 
 :put_team:
 

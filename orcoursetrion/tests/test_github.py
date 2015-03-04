@@ -12,9 +12,11 @@ import mock
 from orcoursetrion.actions import (
     create_export_repo,
     rerun_studio,
+    release_studio,
     create_xml_repo,
+    rerun_xml,
+    release_xml,
     put_team,
-    rerun_xml
 )
 from orcoursetrion.lib import (
     GitHub,
@@ -394,6 +396,25 @@ class TestGithub(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
+    def test_actions_release_studio_success(self, config):
+        """Test the API call comes through as expected.
+        """
+        config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
+        config.ORC_GH_API_URL = self.URL
+        config.ORC_COURSE_PREFIX = self.TEST_PREFIX
+        config.ORC_STUDIO_ORG = self.ORG
+        config.ORC_PRODUCTION_GITRELOAD = self.TEST_PRODUCTION_GR
+
+        self.register_hook_create(json.dumps({'id': 2}), status=201)
+        self.register_team_repo_add(self.callback_team_repo)
+
+        release_studio(
+            self.TEST_COURSE,
+            self.TEST_TERM,
+        )
+
+    @mock.patch('orcoursetrion.actions.github.config')
+    @httpretty.activate
     def test_actions_create_xml_repo_success(self, config):
         """Test the API call comes through as expected.
         """
@@ -463,6 +484,25 @@ class TestGithub(TestGithubBase):
         self.register_hook_delete()
         hooks_deleted = rerun_xml(self.TEST_COURSE, self.TEST_TERM)
         self.assertEqual(1, hooks_deleted)
+
+    @mock.patch('orcoursetrion.actions.github.config')
+    @httpretty.activate
+    def test_actions_release_XML_success(self, config):
+        """Test the API call comes through as expected.
+        """
+        config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
+        config.ORC_GH_API_URL = self.URL
+        config.ORC_COURSE_PREFIX = self.TEST_PREFIX
+        config.ORC_XML_ORG = self.ORG
+        config.ORC_PRODUCTION_GITRELOAD = self.TEST_PRODUCTION_GR
+
+        self.register_hook_create(json.dumps({'id': 2}), status=201)
+        self.register_team_repo_add(self.callback_team_repo)
+
+        release_xml(
+            self.TEST_COURSE,
+            self.TEST_TERM,
+        )
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate

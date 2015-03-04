@@ -61,3 +61,8 @@ Configuration options
                  server URL (including username and password) for the
                  course development LMS.
 
+.. autoattribute:: orcoursetrion.config.ORC_PRODUCTION_GITRELOAD
+    :annotation: = `gitreload <https://github.com/mitodl/gitreload>`_
+                 server URL (including username and password) for the
+                 course production LMS.
+

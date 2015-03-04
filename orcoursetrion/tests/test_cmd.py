@@ -50,6 +50,25 @@ class TestGithubCommand(TestGithubBase):
                     self.TEST_NEW_TERM
                 )
 
+    def test_cmd_release_studio(self):
+        """
+        Command line test of release_studio
+        """
+
+        args = [
+            'orcoursetrion', 'release_studio',
+            '-c', self.TEST_COURSE,
+            '-t', self.TEST_TERM,
+        ]
+        with mock.patch('sys.argv', args):
+            with mock.patch('orcoursetrion.cmd.actions') as mocked_actions:
+                execute()
+                self.assertTrue(mocked_actions.release_studio.called)
+                mocked_actions.release_studio.assert_called_with(
+                    self.TEST_COURSE,
+                    self.TEST_TERM,
+                )
+
     def test_cmd_create_xml_repo(self):
         """
         Command line test of create_export_repo
@@ -108,6 +127,25 @@ class TestGithubCommand(TestGithubBase):
                 execute()
                 self.assertTrue(mocked_actions.rerun_xml.called)
                 mocked_actions.rerun_xml.assert_called_with(
+                    self.TEST_COURSE,
+                    self.TEST_TERM,
+                )
+
+    def test_cmd_release_xml(self):
+        """
+        Command line test of release_xml
+        """
+
+        args = [
+            'orcoursetrion', 'release_xml',
+            '-c', self.TEST_COURSE,
+            '-t', self.TEST_TERM,
+        ]
+        with mock.patch('sys.argv', args):
+            with mock.patch('orcoursetrion.cmd.actions') as mocked_actions:
+                execute()
+                self.assertTrue(mocked_actions.release_xml.called)
+                mocked_actions.release_xml.assert_called_with(
                     self.TEST_COURSE,
                     self.TEST_TERM,
                 )
