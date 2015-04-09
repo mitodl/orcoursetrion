@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Because pylint doesn't do dynamic attributes for orcoursetrion.config
+# pylint: disable=no-member
 """
 Github based actions for orchestrion to take. i.e. "Create a studio
 course export repo", "Add course team to github", etc

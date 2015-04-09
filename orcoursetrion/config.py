@@ -4,18 +4,6 @@ Configuration needed for Orchestrion to function (i.e. API keys)
 """
 import os
 
-prefer_django = True
-try:
-    from django.conf import settings
-except ImportError:
-    prefer_django = False
-
-if prefer_django:
-    primary_config = settings
-    fallback_config = os.environ
-else:
-    primary_config = os.environ
-    fallback_config = os.environ
 
 CONFIG_KEYS = {
     # GitHub API Key
@@ -51,6 +39,30 @@ CONFIG_KEYS = {
     # Web hook URL (including basic auth) for course production LMS
     'ORC_PRODUCTION_GITRELOAD': None,
 }
-for key, default_value in CONFIG_KEYS.items():
-    value = primary_config.get(key, fallback_config.get(key, default_value))
-    vars()[key] = value
+
+
+def configure():
+    """
+    Configure the application using a three way try for settings.
+    """
+    prefer_django = True
+    try:
+        from django.conf import settings
+    except ImportError:
+        prefer_django = False
+
+    if prefer_django:
+        primary_config = settings
+        fallback_config = os.environ
+    else:
+        primary_config = os.environ
+        fallback_config = os.environ
+
+    for key, default_value in CONFIG_KEYS.items():
+        value = primary_config.get(
+            key,
+            fallback_config.get(key, default_value)
+        )
+        globals()[key] = value
+
+configure()

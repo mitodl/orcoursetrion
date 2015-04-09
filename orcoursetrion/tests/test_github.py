@@ -2,6 +2,9 @@
 """
 Test github actions and backing library
 """
+# Because pylint can't figure out dynamic attributes for config or sh
+# pylint: disable=no-member
+
 from functools import partial
 import json
 import os
@@ -76,6 +79,7 @@ class TestGithub(TestGithubBase):
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
         with self.assertRaisesRegexp(GitHubUnknownError, re.escape(error)):
+            # pylint: disable=protected-access
             git_hub._get_all(test_url)
 
     @httpretty.activate
@@ -198,8 +202,8 @@ class TestGithub(TestGithubBase):
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
         # See how we handle no teams
         with self.assertRaisesRegexp(
-                GitHubUnknownError,
-                re.escape("No teams found in org. This shouldn't happen")
+            GitHubUnknownError,
+            re.escape("No teams found in org. This shouldn't happen")
         ):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
 
@@ -241,7 +245,7 @@ class TestGithub(TestGithubBase):
 
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
         with self.assertRaisesRegexp(GitHubUnknownError, json.dumps({
-                "message": "Validation Failed",
+            "message": "Validation Failed",
         })):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
 
@@ -323,7 +327,7 @@ class TestGithub(TestGithubBase):
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
         with self.assertRaisesRegexp(
-                GitHubUnknownError, json.dumps({'id': 2})
+            GitHubUnknownError, json.dumps({'id': 2})
         ):
             git_hub.put_team(
                 self.ORG, 'New Team', True, self.TEST_TEAM_MEMBERS
@@ -339,13 +343,15 @@ class TestGithub(TestGithubBase):
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
         with self.assertRaisesRegexp(
-                GitHubUnknownError, '^Failed to add or remove.+$'
+            GitHubUnknownError, '^Failed to add or remove.+$'
         ):
             git_hub.put_team(self.ORG, self.TEST_TEAM, True, [])
 
     def test_lib_copy_repo(self):
         """Verify that we can do a single commit, single branch copy of a
         repo."""
+        # Even pylint thinks this test is too long, but it is needed
+        # pylint: disable=too-many-locals
 
         from orcoursetrion import config
 
@@ -353,8 +359,8 @@ class TestGithub(TestGithubBase):
         commit_2 = 'world'
         branch = 'foo'
 
-        SRC_REPO = 'Thing1'
-        DST_REPO = 'Thing2'
+        src_repo = 'Thing1'
+        dst_repo = 'Thing2'
 
         prefix = 'orc_git_test'
 
@@ -379,9 +385,9 @@ class TestGithub(TestGithubBase):
         # Create a base repo with some commits, then
         # Run the copy and verify the results
         sh.cd(tmp_dir_src)
-        sh.mkdir(SRC_REPO)
-        sh.cd(SRC_REPO)
-        git = sh.git.bake(_cwd=os.path.join(tmp_dir_src, SRC_REPO))
+        sh.mkdir(src_repo)
+        sh.cd(src_repo)
+        git = sh.git.bake(_cwd=os.path.join(tmp_dir_src, src_repo))
         git.init()
         git.config('user.email', config.ORC_GH_EMAIL)
         git.config('user.name', config.ORC_GH_NAME)
@@ -402,15 +408,15 @@ class TestGithub(TestGithubBase):
 
         # Now create the initial bare repo at the destination
         sh.cd(tmp_dir_dst)
-        sh.mkdir(DST_REPO)
-        sh.cd(DST_REPO)
+        sh.mkdir(dst_repo)
+        sh.cd(dst_repo)
         sh.git.init(bare=True)
 
         # Alright, run the copy and verify the expected commit
         # message, and that the test file has the last commit string
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
-        src_repo_url = 'file://{0}'.format(os.path.join(tmp_dir_src, SRC_REPO))
-        dst_repo_url = 'file://{0}'.format(os.path.join(tmp_dir_dst, DST_REPO))
+        src_repo_url = 'file://{0}'.format(os.path.join(tmp_dir_src, src_repo))
+        dst_repo_url = 'file://{0}'.format(os.path.join(tmp_dir_dst, dst_repo))
 
         git_hub.shallow_copy_repo(
             src_repo_url,
@@ -421,9 +427,9 @@ class TestGithub(TestGithubBase):
         # Verify things are looking right.
         sh.cd(tmp_dir_dst)
         # Clone bare destination repo and verify contents
-        DST_REPO_CLONE = 'cloned'
-        sh.git.clone(dst_repo_url, DST_REPO_CLONE)
-        sh.cd(DST_REPO_CLONE)
+        dst_repo_clone = 'cloned'
+        sh.git.clone(dst_repo_url, dst_repo_clone)
+        sh.cd(dst_repo_clone)
 
         # Assert file is as expected
         with open('test', 'r') as test_file:
@@ -450,7 +456,7 @@ class TestGithub(TestGithubBase):
 
         # Delete old clone and run it with a different branch
         sh.cd(tmp_dir_dst)
-        shutil.rmtree(DST_REPO_CLONE)
+        shutil.rmtree(dst_repo_clone)
         git_hub.shallow_copy_repo(
             src_repo_url,
             dst_repo_url,
@@ -461,9 +467,9 @@ class TestGithub(TestGithubBase):
         # Verify things are looking right in the branch clone
         sh.cd(tmp_dir_dst)
         # Clone bare destination repo and verify contents
-        DST_REPO_CLONE = 'cloned'
-        sh.git.clone(dst_repo_url, DST_REPO_CLONE)
-        sh.cd(DST_REPO_CLONE)
+        dst_repo_clone = 'cloned'
+        sh.git.clone(dst_repo_url, dst_repo_clone)
+        sh.cd(dst_repo_clone)
 
         # Assert file is as expected
         with open('test', 'r') as test_file:

@@ -10,6 +10,9 @@ import requests
 import sh
 
 
+CLONE_DIR = 'cloned_repo'
+
+
 class GitHubException(Exception):
     """Base exception class others inherit."""
     pass
@@ -237,6 +240,9 @@ class GitHub(object):
                 (https://developer.github.com/v3/orgs/teams/#response-1)
 
         """
+        # Disabling too-many-locals because I need them as a human to
+        # keep track of the sets going on here.
+        # pylint: disable=too-many-locals
         try:
             team_dict = self._find_team(org, team_name)
         except GitHubNoTeamFound:
@@ -394,7 +400,8 @@ class GitHub(object):
             num_hooks_removed += 1
         return num_hooks_removed
 
-    def shallow_copy_repo(self, src_repo, dst_repo, committer, branch=None):
+    @staticmethod
+    def shallow_copy_repo(src_repo, dst_repo, committer, branch=None):
         """Copies one branch repo's contents to a new repo in the same
         organization without history.
 
@@ -424,8 +431,10 @@ class GitHub(object):
             None
 
         """
-        CLONE_DIR = 'cloned_repo'
-        # Grab current working directoy so we return after we are done
+        # Disable member use because pylint doesn't get dynamic members
+        # pylint: disable=no-member
+
+        # Grab current working directory so we return after we are done
         cwd = unicode(sh.pwd().rstrip('\n'))
         tmp_dir = tempfile.mkdtemp(prefix='orc_git')
         try:
