@@ -153,7 +153,7 @@ def execute():
         help='Term of the course (i.e. Spring_2015)'
     )
     create_xml_repo.add_argument(
-        '-g', '--team', type=str,
+        '-g', '--team', type=str, default=None,
         help='Name of team in organization that should have access, creates' +
         ' new team with the same name as the repository if empty.'
     )
