@@ -603,6 +603,30 @@ class TestGithub(TestGithubBase):
             member_changes
         )
 
+        # Now create repo without a team
+        member_changes = []
+        member_list = ['andrea', 'andreas']
+        self.register_team_members(
+            partial(self.callback_team_members, members=[])
+        )
+        self.register_team_create(
+            partial(self.callback_team_create, read_only=False)
+        )
+        self.register_team_membership(
+            partial(self.callback_team_membership, action_list=member_changes)
+        )
+        create_xml_repo(
+            course=self.TEST_COURSE,
+            term=self.TEST_TERM,
+            team=None,
+            members=member_list,
+            description=self.TEST_DESCRIPTION
+        )
+        self.assertItemsEqual(
+            [(unicode(x), True) for x in member_list],
+            member_changes
+        )
+
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
     def test_actions_rerun_xml_success(self, config):

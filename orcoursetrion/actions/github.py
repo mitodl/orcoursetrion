@@ -133,6 +133,10 @@ def create_xml_repo(course, term, team=None, members=None, description=None):
     with ``team`` as a collaborator (Along with
     :py:const:`~orcoursetrion.config.ORC_XML_DEPLOY_TEAM`).
 
+    If ``team`` is not provided, then it will be generated with
+    :py:const:`~orcoursetrion.config.ORC_COURSE_PREFIX`, ``course``,
+    and ``term``
+
     If ``members`` is provided, the ``team`` membership will be
     *replaced* with the members listed.  It will also create the team if
     it doesn't already exist regardless of the value of ``members``.
@@ -173,7 +177,7 @@ def create_xml_repo(course, term, team=None, members=None, description=None):
     )
 
     # Team matches repo_name if no team is passed.
-    if (team is None):
+    if team is None:
         team = repo_name
 
     # Setup the team
