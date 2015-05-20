@@ -154,8 +154,8 @@ def execute():
     )
     create_xml_repo.add_argument(
         '-g', '--team', type=str,
-        help='Name of team in organization that should have access, creates'
-        + ' new team with the same name as the repository if empty.'
+        help='Name of team in organization that should have access, creates' +
+        ' new team with the same name as the repository if empty.'
     )
     create_xml_repo.add_argument(
         '-m', '--member', nargs='*', type=str,
