@@ -551,7 +551,7 @@ class TestGithub(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_create_xml_repo_success(self, config):
+    def test_actions_create_xml_repo_success_old_team(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
@@ -572,11 +572,35 @@ class TestGithub(TestGithubBase):
             status=201
         )
 
+        # Create a repo with an old team.
         create_xml_repo(
             course=self.TEST_COURSE,
             term=self.TEST_TERM,
             team=self.TEST_TEAM,
             description=self.TEST_DESCRIPTION,
+        )
+
+    @mock.patch('orcoursetrion.actions.github.config')
+    @httpretty.activate
+    def test_actions_create_xml_repo_success_new_team(self, config):
+        """Test the API call comes through as expected.
+        """
+        config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
+        config.ORC_GH_API_URL = self.URL
+        config.ORC_COURSE_PREFIX = self.TEST_PREFIX
+        config.ORC_XML_ORG = self.ORG
+        config.ORC_XML_DEPLOY_TEAM = self.TEST_TEAM
+        config.ORC_STAGING_GITRELOAD = self.TEST_STAGING_GR
+
+        self.register_repo_check(self.callback_repo_check)
+        self.register_repo_create(self.callback_repo_create)
+        self.register_team_list(
+            partial(self.callback_team_list, more=True)
+        )
+        self.register_team_repo_add(self.callback_team_repo)
+        self.register_hook_create(
+            body=json.dumps({'id': 1}),
+            status=201
         )
 
         # Now create repo with a new team
@@ -603,6 +627,29 @@ class TestGithub(TestGithubBase):
             member_changes
         )
 
+    @mock.patch('orcoursetrion.actions.github.config')
+    @httpretty.activate
+    def test_actions_create_xml_repo_success_no_team(self, config):
+        """Test the API call comes through as expected.
+        """
+        config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
+        config.ORC_GH_API_URL = self.URL
+        config.ORC_COURSE_PREFIX = self.TEST_PREFIX
+        config.ORC_XML_ORG = self.ORG
+        config.ORC_XML_DEPLOY_TEAM = self.TEST_TEAM
+        config.ORC_STAGING_GITRELOAD = self.TEST_STAGING_GR
+
+        self.register_repo_check(self.callback_repo_check)
+        self.register_repo_create(self.callback_repo_create)
+        self.register_team_list(
+            partial(self.callback_team_list, more=True)
+        )
+        self.register_team_repo_add(self.callback_team_repo)
+        self.register_hook_create(
+            body=json.dumps({'id': 1}),
+            status=201
+        )
+
         # Now create repo without a team
         member_changes = []
         member_list = ['andrea', 'andreas']
@@ -618,7 +665,6 @@ class TestGithub(TestGithubBase):
         create_xml_repo(
             course=self.TEST_COURSE,
             term=self.TEST_TERM,
-            team=None,
             members=member_list,
             description=self.TEST_DESCRIPTION
         )
