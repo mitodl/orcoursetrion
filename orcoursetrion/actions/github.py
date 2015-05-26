@@ -125,13 +125,17 @@ def release_studio(course, term):
     )
 
 
-def create_xml_repo(course, term, team, members=None, description=None):
+def create_xml_repo(course, term, team=None, members=None, description=None):
     """Creates a course repo at
     :py:const:`~orcoursetrion.config.ORC_GH_API_URL` with key
     :py:const:`~orcoursetrion.config.ORC_GH_OAUTH2_TOKEN` and at
     organization :py:const:`~orcoursetrion.config.ORC_XML_ORG`, and
     with ``team`` as a collaborator (Along with
     :py:const:`~orcoursetrion.config.ORC_XML_DEPLOY_TEAM`).
+
+    If ``team`` is not provided, then it will be generated with
+    :py:const:`~orcoursetrion.config.ORC_COURSE_PREFIX`, ``course``,
+    and ``term``
 
     If ``members`` is provided, the ``team`` membership will be
     *replaced* with the members listed.  It will also create the team if
@@ -171,7 +175,12 @@ def create_xml_repo(course, term, team, members=None, description=None):
     github.add_team_repo(
         config.ORC_XML_ORG, repo_name, config.ORC_XML_DEPLOY_TEAM
     )
-    # Setup the passed in team
+
+    # Team matches repo_name if no team is passed.
+    if team is None:
+        team = repo_name
+
+    # Setup the team
     github.put_team(config.ORC_XML_ORG, team, False, members)
     github.add_team_repo(config.ORC_XML_ORG, repo_name, team)
 

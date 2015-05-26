@@ -77,6 +77,11 @@ class TestGithubBase(unittest.TestCase):
                 'id': 1,
                 'name': self.TEST_TEAM
             },
+
+            {
+                'id': 1,
+                'name': self.TEST_REPO
+            }
         ]
         page2 = [
             {

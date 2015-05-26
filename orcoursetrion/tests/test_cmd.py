@@ -111,6 +111,24 @@ class TestGithubCommand(TestGithubBase):
                     ['archlight', 'dreadnought'],
                     self.TEST_DESCRIPTION
                 )
+        args = [
+            'orcoursetrion', 'create_xml_repo',
+            '-c', self.TEST_COURSE,
+            '-t', self.TEST_TERM,
+            '-d', self.TEST_DESCRIPTION,
+            '-m', 'archlight', 'dreadnought',
+        ]
+        with mock.patch('sys.argv', args):
+            with mock.patch('orcoursetrion.cmd.actions') as mocked_actions:
+                execute()
+                self.assertTrue(mocked_actions.create_xml_repo.called)
+                mocked_actions.create_xml_repo.assert_called_with(
+                    self.TEST_COURSE,
+                    self.TEST_TERM,
+                    None,
+                    ['archlight', 'dreadnought'],
+                    self.TEST_DESCRIPTION
+                )
 
     def test_cmd_rerun_xml(self):
         """
