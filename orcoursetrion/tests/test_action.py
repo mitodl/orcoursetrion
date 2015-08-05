@@ -55,7 +55,7 @@ class TestActions(TestGithubBase):
         # Mocking out add_repo_file due to it needing the repo to exist
         # but other items in this test need it to not exist
         with mock.patch(
-                'orcoursetrion.actions.github.GitHub.add_repo_file'
+            'orcoursetrion.actions.github.GitHub.add_repo_file'
         ) as mock_add_file:
             create_export_repo(
                 self.TEST_COURSE,
@@ -98,9 +98,9 @@ class TestActions(TestGithubBase):
         self.register_hook_delete()
 
         # Mocking out add_repo_file due to it needing the repo to exist
-        # but other items in this test need it to not exist
+        # but other items in this test need it to not exist.
         with mock.patch(
-                'orcoursetrion.actions.github.GitHub.add_repo_file'
+            'orcoursetrion.actions.github.GitHub.add_repo_file'
         ) as mock_add_file:
 
             rerun_studio(
@@ -286,7 +286,7 @@ class TestActions(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_release_XML_success(self, config):
+    def test_release_xml_success(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
