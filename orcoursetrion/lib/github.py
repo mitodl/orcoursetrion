@@ -2,6 +2,7 @@
 """
 Github class for making needed API calls to github
 """
+import base64
 from itertools import chain
 import shutil
 import tempfile
@@ -460,3 +461,54 @@ class GitHub(object):
         finally:
             shutil.rmtree(tmp_dir, ignore_errors=True)
             sh.cd(cwd)
+
+    def add_repo_file(self, org, repo, committer, message, path, contents):
+        """Adds the ``contents`` provided to the ``path`` in the repo
+        specified and committed by the ``commiter`` parameters
+        provided.
+
+        https://developer.github.com/v3/repos/contents/#create-a-file
+
+        .. NOTE::
+            This commits directly to the default branch of the repo.
+
+        Args:
+            org (str): Organization the repo lives in.
+            repo (str): The name of the repo.
+            committer (dict): {'name': ..., 'email': ...} for the name
+                and e-mail to use in the initial commit of the
+                destination repo.
+            message (str): Commit message to use for the addition.
+            path (str): The content path, i.e. ``docs/.gitignore``
+            contents (str): The actual string Contents of the file.
+        Raises:
+            requests.exceptions.RequestException
+            GitHubRepoDoesNotExist
+            GitHubUnknownError
+        Returns:
+            None
+        """
+        repo_dict = self._get_repo(org, repo)
+        if repo_dict is None:
+            raise GitHubRepoDoesNotExist(
+                'Repo does not exist. Cannot add file'
+            )
+        url = '{url}repos/{org}/{repo}/contents/{path}'.format(
+            url=self.api_url,
+            org=org,
+            repo=repo,
+            path=path
+        )
+        payload = {
+            'message': message,
+            'committer': committer,
+            'content': base64.b64encode(contents).decode('ascii'),
+        }
+        response = self.session.put(url, json=payload)
+        if response.status_code != 201:
+            raise GitHubUnknownError(
+                'Failed to add contents to {org}/{repo}/{path}. '
+                'Got: {response}'.format(
+                    org=org, repo=repo, path=path, response=response.text
+                )
+            )

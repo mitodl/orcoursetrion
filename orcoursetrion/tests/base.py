@@ -347,3 +347,19 @@ class TestGithubBase(unittest.TestCase):
             ),
             body=body
         )
+
+    def register_create_file(self, status=201):
+        """
+        File creation API
+        """
+        httpretty.register_uri(
+            httpretty.PUT,
+            re.compile(
+                r'^{url}repos/{org}/{repo}/contents/.+$'.format(
+                    url=re.escape(self.URL),
+                    org=re.escape(self.ORG),
+                    repo=re.escape(self.TEST_REPO),
+                )
+            ),
+            status=status
+        )

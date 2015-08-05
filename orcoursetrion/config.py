@@ -13,7 +13,7 @@ CONFIG_KEYS = {
     'ORC_GH_API_URL': 'https://github.mit.edu/api/v3/',
 
     # GitHub Committer Name
-    'ORC_GH_NAME': 'Orcoursetrion ODL',
+    'ORC_GH_NAME': 'Orcoursetrion',
 
     # GitHub Committer Email
     'ORC_GH_EMAIL': 'orcoursetrion@example.com',

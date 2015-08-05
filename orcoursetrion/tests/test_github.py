@@ -29,7 +29,7 @@ class TestGithub(TestGithubBase):
     """Test Github actions and backing library."""
 
     @httpretty.activate
-    def test_lib_create_repo_success(self):
+    def test_create_repo_success(self):
         """Test the API call comes through as expected.
         """
         self.register_repo_check(self.callback_repo_check)
@@ -42,7 +42,7 @@ class TestGithub(TestGithubBase):
         self.assertEqual(repo['html_url'], 'testing')
 
     @httpretty.activate
-    def test_lib_create_repo_exists(self):
+    def test_create_repo_exists(self):
         """Test what happens when the repo exists."""
 
         self.register_repo_check(
@@ -55,7 +55,7 @@ class TestGithub(TestGithubBase):
             )
 
     @httpretty.activate
-    def test_lib_get_all_bad_status(self):
+    def test_get_all_bad_status(self):
         """Test how we handle _get_all getting a bad status code"""
         error = json.dumps({'error': 'error'})
         test_url = '{url}repos/{org}/{repo}/hooks'.format(
@@ -73,7 +73,7 @@ class TestGithub(TestGithubBase):
             git_hub._get_all(test_url)
 
     @httpretty.activate
-    def test_lib_create_repo_unknown_errors(self):
+    def test_create_repo_unknown_errors(self):
         """Test what happens when we don't get expected status_codes
         """
 
@@ -97,7 +97,7 @@ class TestGithub(TestGithubBase):
             )
 
     @httpretty.activate
-    def test_lib_create_hook(self):
+    def test_create_hook(self):
         """Test valid hook creation"""
         self.register_hook_create(json.dumps({'id': 1}), status=201)
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
@@ -114,7 +114,7 @@ class TestGithub(TestGithubBase):
             git_hub.add_web_hook(self.ORG, self.TEST_REPO, 'http://fluff')
 
     @httpretty.activate
-    def test_lib_delete_hook_fail(self):
+    def test_delete_hook_fail(self):
         """Test the deletion of hooks"""
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
 
@@ -154,7 +154,7 @@ class TestGithub(TestGithubBase):
             git_hub.delete_web_hooks(self.ORG, self.TEST_REPO)
 
     @httpretty.activate
-    def test_lib_delete_hook_success(self):
+    def test_delete_hook_success(self):
         """Test successful hook deletion."""
         self.register_repo_check(
             partial(self.callback_repo_check, status_code=200)
@@ -172,7 +172,7 @@ class TestGithub(TestGithubBase):
         self.assertEqual(1, deleted_hooks)
 
     @httpretty.activate
-    def test_lib_add_team_repo_success(self):
+    def test_add_team_repo_success(self):
         """Test what happens when we don't get expected status_codes
         """
         self.register_team_list(partial(self.callback_team_list, more=True))
@@ -183,7 +183,7 @@ class TestGithub(TestGithubBase):
         git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
 
     @httpretty.activate
-    def test_lib_add_team_repo_no_teams(self):
+    def test_add_team_repo_no_teams(self):
         """Test what happens when we don't have any teams
         """
         self.register_team_list(
@@ -198,7 +198,7 @@ class TestGithub(TestGithubBase):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
 
     @httpretty.activate
-    def test_lib_add_team_repo_team_not_found(self):
+    def test_add_team_repo_team_not_found(self):
         """Test what happens when the team isn't in the org
         """
         self.register_team_list(self.callback_team_list)
@@ -207,7 +207,7 @@ class TestGithub(TestGithubBase):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, 'foobar')
 
     @httpretty.activate
-    def test_lib_add_team_repo_team_spaces_case_match(self):
+    def test_add_team_repo_team_spaces_case_match(self):
         """The API sometimes returns spaces in team names, so make sure we
         still match when stripped. Additionally, be case insensitive
         since github is.
@@ -225,7 +225,7 @@ class TestGithub(TestGithubBase):
         )
 
     @httpretty.activate
-    def test_lib_add_team_repo_fail(self):
+    def test_add_team_repo_fail(self):
         """Test what happens when the repo can't be added to the team
         """
         self.register_team_list(self.callback_team_list)
@@ -240,7 +240,7 @@ class TestGithub(TestGithubBase):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
 
     @httpretty.activate
-    def test_lib_put_team_success_exists(self):
+    def test_put_team_success_exists(self):
         """Change team membership successfully for team that exists."""
         team = ['archlight', 'ereshkigal']
         member_changes = []
@@ -262,7 +262,7 @@ class TestGithub(TestGithubBase):
         )
 
     @httpretty.activate
-    def test_lib_put_team_create(self):
+    def test_put_team_create(self):
         """Create a team with membership."""
         member_changes = []
         self.register_team_list(self.callback_team_list)
@@ -283,7 +283,7 @@ class TestGithub(TestGithubBase):
         )
 
     @httpretty.activate
-    def test_lib_put_team_create_permission(self):
+    def test_put_team_create_permission(self):
         """Create a team with membership."""
         member_changes = []
         self.register_team_list(self.callback_team_list)
@@ -309,7 +309,7 @@ class TestGithub(TestGithubBase):
         )
 
     @httpretty.activate
-    def test_lib_put_team_creation_fail(self):
+    def test_put_team_creation_fail(self):
         """Create a team with membership."""
         self.register_team_list(self.callback_team_list)
         self.register_team_create(
@@ -324,7 +324,7 @@ class TestGithub(TestGithubBase):
             )
 
     @httpretty.activate
-    def test_lib_put_team_membership_fail(self):
+    def test_put_team_membership_fail(self):
         """Change team membership successfully for team that exists."""
         self.register_team_list(self.callback_team_list)
         self.register_team_members(self.callback_team_members)
@@ -337,7 +337,7 @@ class TestGithub(TestGithubBase):
         ):
             git_hub.put_team(self.ORG, self.TEST_TEAM, True, [])
 
-    def test_lib_copy_repo(self):
+    def test_copy_repo(self):
         """Verify that we can do a single commit, single branch copy of a
         repo."""
         # Even pylint thinks this test is too long, but it is needed
@@ -464,3 +464,70 @@ class TestGithub(TestGithubBase):
         # Assert file is as expected
         with open('test', 'r') as test_file:
             self.assertEqual(branch, test_file.read())
+
+    @httpretty.activate
+    def test_add_repo_file_bad_status(self):
+        """
+        Verify the successful file creation and verify the request made
+        """
+        self.register_repo_check(
+            partial(self.callback_repo_check, status_code=200)
+        )
+        self.register_create_file(status=500)
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        with self.assertRaises(GitHubUnknownError):
+            git_hub.add_repo_file(
+                self.ORG, self.TEST_REPO, None, None, None, ''
+            )
+
+    @httpretty.activate
+    def test_add_repo_file_repo_not_exist(self):
+        """
+        Test what happens when the repo you are adding a file to doesn't
+        exist.
+        """
+        self.register_repo_check(self.callback_repo_check)
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        with self.assertRaises(GitHubRepoDoesNotExist):
+            git_hub.add_repo_file(
+                self.ORG, self.TEST_REPO, None, None, None, None
+            )
+
+    @httpretty.activate
+    def test_add_repo_file_success(self):
+        """
+        Validate a working request to add a file
+        """
+        from orcoursetrion import config
+
+        test_message = 'Heyo'
+        test_path = 'blablah/blah/123'
+        test_contents = 'hello'
+        test_committer = {
+            'email': config.ORC_GH_EMAIL,
+            'name': config.ORC_GH_NAME,
+        }
+        self.register_repo_check(
+            partial(self.callback_repo_check, status_code=200)
+        )
+        self.register_create_file()
+        git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
+        git_hub.add_repo_file(
+            org=self.ORG,
+            repo=self.TEST_REPO,
+            committer=test_committer,
+            message=test_message,
+            path=test_path,
+            contents=test_contents
+        )
+        last_request = httpretty.last_request()
+        self.assertEqual(last_request.method, 'PUT')
+        self.assertTrue(last_request.path.endswith(test_path))
+        self.assertEqual(
+            last_request.body,
+            json.dumps({
+                'content': 'aGVsbG8=',
+                'committer': test_committer,
+                'message': test_message
+            })
+        )
