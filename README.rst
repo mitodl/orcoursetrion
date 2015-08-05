@@ -44,3 +44,18 @@ commands and actions.
 If you are adding an XML course, you will also need to define
 ``ORC_STAGING_GITRELOAD`` in your environment for where Web hooks
 should be sent for push events.
+
+Optional
+========
+
+There are a few other environment variables to add if you want to use the
+release command, or if you would like orcoursetrion's commits to be from on
+particular user.
+
+``ORC_PRODUCTION_GITRELOAD`` for where Web hooks related to a production run of
+your course should be sent for push events.
+
+``ORC_GH_NAME`` for how you want commits from orcoursetrion to be identified.
+
+``ORC_GH_EMAIL`` for what email address you want associated with commits from
+orcoursetrion.

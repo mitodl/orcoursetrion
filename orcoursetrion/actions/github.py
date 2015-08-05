@@ -8,9 +8,16 @@ course export repo", "Add course team to github", etc
 from orcoursetrion import config
 from orcoursetrion.lib import GitHub
 
+COMMITTER = {'email': config.ORC_GH_EMAIL, 'name': config.ORC_GH_NAME}
+GITIGNORE_CONTENTS = '''
+drafts/
+'''
+GITIGNORE_MESSAGE = 'Automatic .gitignore from Orcoursetrion'
+GITIGNORE_PATH = '.gitignore'
+
 
 def create_export_repo(course, term, description=None):
-    """Creates a course repo at
+    """Creates a studio based course repo at
     :py:const:`~orcoursetrion.config.ORC_GH_API_URL` with key
     :py:const:`~orcoursetrion.config.ORC_GH_OAUTH2_TOKEN`, at
     organization :py:const:`~orcoursetrion.config.ORC_STUDIO_ORG`,
@@ -44,6 +51,17 @@ def create_export_repo(course, term, description=None):
     github.add_team_repo(
         config.ORC_STUDIO_ORG, repo_name, config.ORC_STUDIO_DEPLOY_TEAM
     )
+
+    # Add .gitignore file
+    github.add_repo_file(
+        org=config.ORC_STUDIO_ORG,
+        repo=repo_name,
+        committer=COMMITTER,
+        message=GITIGNORE_MESSAGE,
+        path=GITIGNORE_PATH,
+        contents=GITIGNORE_CONTENTS
+    )
+
     return repo
 
 
@@ -92,6 +110,15 @@ def rerun_studio(course, term, new_term, description=None):
     # Add repo to team
     github.add_team_repo(
         config.ORC_STUDIO_ORG, repo_name, config.ORC_STUDIO_DEPLOY_TEAM
+    )
+    # Add .gitignore file
+    github.add_repo_file(
+        org=config.ORC_STUDIO_ORG,
+        repo=repo_name,
+        committer=COMMITTER,
+        message=GITIGNORE_MESSAGE,
+        path=GITIGNORE_PATH,
+        contents=GITIGNORE_CONTENTS
     )
     return repo
 

@@ -20,6 +20,12 @@ from orcoursetrion.actions import (
     release_xml,
     put_team,
 )
+from orcoursetrion.actions.github import (
+    COMMITTER,
+    GITIGNORE_CONTENTS,
+    GITIGNORE_MESSAGE,
+    GITIGNORE_PATH
+)
 from orcoursetrion.tests.base import TestGithubBase
 
 
@@ -28,7 +34,7 @@ class TestActions(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_create_export_repo_success(self, config):
+    def test_create_export_repo_success(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
@@ -46,15 +52,32 @@ class TestActions(TestGithubBase):
         )
         self.register_team_repo_add(self.callback_team_repo)
 
-        create_export_repo(
-            self.TEST_COURSE,
-            self.TEST_TERM,
-            description=self.TEST_DESCRIPTION
-        )
+        # Mocking out add_repo_file due to it needing the repo to exist
+        # but other items in this test need it to not exist
+        with mock.patch(
+                'orcoursetrion.actions.github.GitHub.add_repo_file'
+        ) as mock_add_file:
+            create_export_repo(
+                self.TEST_COURSE,
+                self.TEST_TERM,
+                description=self.TEST_DESCRIPTION
+            )
+            mock_add_file.assert_called_with(
+                org=config.ORC_STUDIO_ORG,
+                repo='{prefix}-{course}-{term}'.format(
+                    prefix=self.TEST_PREFIX,
+                    course=self.TEST_COURSE.replace('.', ''),
+                    term=self.TEST_TERM
+                ),
+                committer=COMMITTER,
+                message=GITIGNORE_MESSAGE,
+                path=GITIGNORE_PATH,
+                contents=GITIGNORE_CONTENTS
+            )
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_rerun_studio_success(self, config):
+    def test_rerun_studio_success(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
@@ -74,16 +97,35 @@ class TestActions(TestGithubBase):
         self.register_hook_list()
         self.register_hook_delete()
 
-        rerun_studio(
-            self.TEST_COURSE,
-            self.TEST_TERM,
-            self.TEST_NEW_TERM,
-            description=self.TEST_DESCRIPTION
-        )
+        # Mocking out add_repo_file due to it needing the repo to exist
+        # but other items in this test need it to not exist
+        with mock.patch(
+                'orcoursetrion.actions.github.GitHub.add_repo_file'
+        ) as mock_add_file:
+
+            rerun_studio(
+                self.TEST_COURSE,
+                self.TEST_TERM,
+                self.TEST_NEW_TERM,
+                description=self.TEST_DESCRIPTION
+            )
+
+            mock_add_file.assert_called_with(
+                org=config.ORC_STUDIO_ORG,
+                repo='{prefix}-{course}-{term}'.format(
+                    prefix=self.TEST_PREFIX,
+                    course=self.TEST_COURSE.replace('.', ''),
+                    term=self.TEST_NEW_TERM
+                ),
+                committer=COMMITTER,
+                message=GITIGNORE_MESSAGE,
+                path=GITIGNORE_PATH,
+                contents=GITIGNORE_CONTENTS
+            )
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_release_studio_success(self, config):
+    def test_release_studio_success(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
@@ -102,7 +144,7 @@ class TestActions(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_create_xml_repo_success_old_team(self, config):
+    def test_create_xml_repo_success_old_team(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
@@ -133,7 +175,7 @@ class TestActions(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_create_xml_repo_success_new_team(self, config):
+    def test_create_xml_repo_success_new_team(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
@@ -180,7 +222,7 @@ class TestActions(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_create_xml_repo_success_no_team(self, config):
+    def test_create_xml_repo_success_no_team(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
@@ -226,7 +268,7 @@ class TestActions(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_rerun_xml_success(self, config):
+    def test_rerun_xml_success(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
@@ -244,7 +286,7 @@ class TestActions(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_release_XML_success(self, config):
+    def test_release_XML_success(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
@@ -263,7 +305,7 @@ class TestActions(TestGithubBase):
 
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
-    def test_actions_put_team_success(self, config):
+    def test_put_team_success(self, config):
         """Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
