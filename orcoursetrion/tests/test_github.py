@@ -27,7 +27,9 @@ from orcoursetrion.tests.base import TestGithubBase
 
 class TestGithub(TestGithubBase):
     """Test Github actions and backing library."""
-
+    # All these fit under this test class, so the number of methods seems
+    # valid for now.
+    # pylint: disable=too-many-public-methods
     @httpretty.activate
     def test_create_repo_success(self):
         """Test the API call comes through as expected.
@@ -338,10 +340,13 @@ class TestGithub(TestGithubBase):
             git_hub.put_team(self.ORG, self.TEST_TEAM, True, [])
 
     def test_copy_repo(self):
-        """Verify that we can do a single commit, single branch copy of a
-        repo."""
-        # Even pylint thinks this test is too long, but it is needed
-        # pylint: disable=too-many-locals
+        """
+        Verify that we can do a single commit, single branch copy of a
+        repo.
+        """
+        # Even pylint thinks this test is too long, but it can't be
+        # easily broken up
+        # pylint: disable=too-many-locals,too-many-statements
 
         from orcoursetrion import config
 
