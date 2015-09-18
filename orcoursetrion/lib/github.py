@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Github class for making needed API calls to github
+GitHub class for making needed API calls to github
 """
 import base64
 from itertools import chain

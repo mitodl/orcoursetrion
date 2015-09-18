@@ -38,6 +38,15 @@ CONFIG_KEYS = {
 
     # Web hook URL (including basic auth) for course production LMS
     'ORC_PRODUCTION_GITRELOAD': None,
+
+    # ZenDesk API URL
+    'ORC_ZD_API_URL': "https://odl.zendesk.com/api/v2/",
+
+    # ZenDesk API Key
+    'ORC_ZD_AUTH_TOKEN': None,
+
+    # ZenDesk E-Mail Address
+    'ORC_ZD_EMAIL': "orcoursetrion@example.com",
 }
 
 

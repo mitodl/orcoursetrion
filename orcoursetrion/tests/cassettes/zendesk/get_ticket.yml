@@ -1,0 +1,121 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: GET
+    uri: https://odl.zendesk.com/api/v2/tickets/2700.json
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      cache-control: ['must-revalidate, private, max-age=0']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:04:22 GMT']
+      etag: [W/"2bbeadab860b2fb4646aca5fe524a14a"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: [miss]
+      x-request-id: [d4db235c-14f8-43e2-c37c-b8ca3a61dd58]
+      x-runtime: ['0.223802']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app14.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [f64450aba91e317d868b]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: GET
+    uri: https://odl.zendesk.com/api/v2/tickets/florp.json
+  response:
+    body: {string: !!python/unicode "{\n  \"error\": {\n    \"title\": \"Invalid attribute\",\n
+        \   \"message\": \"You passed an invalid value for the id attribute. must
+        be an integer\"\n  }\n}\n"}
+    headers:
+      cache-control: ['no-cache, private']
+      connection: [keep-alive]
+      content-length: ['141']
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:04:22 GMT']
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-rack-cache: [miss]
+      x-request-id: [3beb34b2-1790-45e3-c59a-b8ca3a61dd58]
+      x-runtime: ['0.185995']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app11.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [3b1032218c604b70b317]
+    status: {code: 400, message: Bad Request}
+version: 1
