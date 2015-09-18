@@ -11,6 +11,7 @@
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
+# pylint: skip-file
 from orcoursetrion import VERSION
 import sphinx_bootstrap_theme
 
@@ -127,3 +128,22 @@ epub_copyright = u'2015, MIT Office of Digital Learning'
 epub_exclude_files = ['search.html']
 
 autoclass_content = 'both'
+
+# -- Monkey-patch to hide 'non-local image warnings' -------------------
+# The following explanation is taken from the source...
+#
+# ...I found this necessary because I want the sphinx-build -W to emit
+# "warnings as errors" as part of my test & build infrastructure, to ensure
+# that there are no mistakes in the documentation -- I know very well that
+# I'm using nonlocal image URI's and I'm OK with that, but I don't want to
+# ignore the other warnings.
+#
+# source: http://stackoverflow.com/a/28778969/875546
+import sphinx.environment
+from docutils.utils import get_source_line
+
+def _warn_node(self, msg, node):
+    if not msg.startswith('nonlocal image URI found:'):
+        self._warnfunc(msg, '%s:%s' % get_source_line(node))
+
+sphinx.environment.BuildEnvironment.warn_node = _warn_node

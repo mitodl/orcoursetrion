@@ -148,7 +148,7 @@ class TestGithubBase(unittest.TestCase):
 
     @staticmethod
     def callback_team_membership(
-        request, uri, headers, success=True, action_list=None
+            request, uri, headers, success=True, action_list=None
     ):
         """Manage both add and delete of team membership.
 
