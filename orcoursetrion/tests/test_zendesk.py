@@ -19,6 +19,7 @@ class TestZenDesk(unittest.TestCase):
                                config.ORC_ZD_AUTH_TOKEN)
         self.test_ticket_id = 3060  # TODO: Fix this
 
+    @unittest.skip("skip protected method")
     @vcr.use_cassette(
         'cassettes/zendesk/get_all.yml',
         filter_headers=['authorization']
@@ -30,6 +31,7 @@ class TestZenDesk(unittest.TestCase):
         self.assertIsNotNone(self.zendesk._get_all('groups'))
         self.assertRaises(ZenDeskUnknownError, self.zendesk._get_all('foo'))
 
+    @unittest.skip("skip protected method")
     @vcr.use_cassette(
         'cassettes/zendesk/get_ticket.yml',
         filter_headers=['authorization']
@@ -42,6 +44,7 @@ class TestZenDesk(unittest.TestCase):
         with self.assertRaises(ZenDeskNoTicketFound):
             self.zendesk._get_ticket('florp')
 
+    @unittest.skip("skip protected method")
     @vcr.use_cassette(
         'cassettes/zendesk/find_group.yml',
         filter_headers=['authorization']
@@ -54,6 +57,7 @@ class TestZenDesk(unittest.TestCase):
         with self.assertRaises(ZenDeskNoGroupFound):
             self.zendesk._find_group('florp')
 
+    @unittest.skip("skip protected method")
     @vcr.use_cassette(
         'cassettes/zendesk/find_user.yml',
         filter_headers=['authorization']
