@@ -22,10 +22,10 @@ class TestGithubBase(unittest.TestCase):
     TEST_DESCRIPTION = 'foo'
     TEST_PREFIX = 'testo'
     TEST_REPO = '{0}-{1}-{2}'.format(
-        TEST_PREFIX, TEST_COURSE.replace('.', ''), TEST_TERM
+        TEST_PREFIX, TEST_COURSE.replace('.', '-'), TEST_TERM
     )
     TEST_RERUN_REPO = '{0}-{1}-{2}'.format(
-        TEST_PREFIX, TEST_COURSE.replace('.', ''), TEST_NEW_TERM
+        TEST_PREFIX, TEST_COURSE.replace('.', '-'), TEST_NEW_TERM
     )
     TEST_TEAM = 'Test-Deploy'
     TEST_TEAM_ID = 1
