@@ -21,7 +21,7 @@ class TestZenDesk(unittest.TestCase):
 
     @unittest.skip("skip protected method")
     @vcr.use_cassette(
-        'cassettes/zendesk/get_all.yml',
+        'data/cassettes/zendesk/get_all.yml',
         filter_headers=['authorization']
     )
     def test_get_all(self):
@@ -33,7 +33,7 @@ class TestZenDesk(unittest.TestCase):
 
     @unittest.skip("skip protected method")
     @vcr.use_cassette(
-        'cassettes/zendesk/get_ticket.yml',
+        'data/cassettes/zendesk/get_ticket.yml',
         filter_headers=['authorization']
     )
     def test_get_ticket(self):
@@ -46,7 +46,7 @@ class TestZenDesk(unittest.TestCase):
 
     @unittest.skip("skip protected method")
     @vcr.use_cassette(
-        'cassettes/zendesk/find_group.yml',
+        'data/cassettes/zendesk/find_group.yml',
         filter_headers=['authorization']
     )
     def test_find_group(self):
@@ -59,7 +59,7 @@ class TestZenDesk(unittest.TestCase):
 
     @unittest.skip("skip protected method")
     @vcr.use_cassette(
-        'cassettes/zendesk/find_user.yml',
+        'data/cassettes/zendesk/find_user.yml',
         filter_headers=['authorization']
     )
     def test_find_user(self):
@@ -71,7 +71,7 @@ class TestZenDesk(unittest.TestCase):
             self.zendesk._find_user('florp')
 
     @vcr.use_cassette(
-        'cassettes/zendesk/create_ticket.yml',
+        'data/cassettes/zendesk/create_ticket.yml',
         filter_headers=['authorization']
     )
     def test_create_ticket(self):
@@ -105,7 +105,7 @@ class TestZenDesk(unittest.TestCase):
             )
 
     @vcr.use_cassette(
-        'cassettes/zendesk/update_ticket.yml',
+        'data/cassettes/zendesk/update_ticket.yml',
         filter_headers=['authorization']
     )
     def test_update_ticket(self):
@@ -153,7 +153,7 @@ class TestZenDesk(unittest.TestCase):
             )
 
     @vcr.use_cassette(
-        'cassettes/zendesk/create_user.yml',
+        'data/cassettes/zendesk/create_user.yml',
         filter_headers=['authorization']
     )
     def test_create_user(self):
