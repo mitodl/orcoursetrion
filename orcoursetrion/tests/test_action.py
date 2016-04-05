@@ -29,7 +29,7 @@ from orcoursetrion.actions.github import (
 from orcoursetrion.tests.base import TestGithubBase
 
 
-class TestActions(TestGithubBase):
+class TestGitHubActions(TestGithubBase):
     """Test Github actions"""
 
     @mock.patch('orcoursetrion.actions.github.config')
@@ -126,7 +126,8 @@ class TestActions(TestGithubBase):
     @mock.patch('orcoursetrion.actions.github.config')
     @httpretty.activate
     def test_release_studio_success(self, config):
-        """Test the API call comes through as expected.
+        """
+        Test the API call comes through as expected.
         """
         config.ORC_GH_OAUTH2_TOKEN = self.OAUTH2_TOKEN
         config.ORC_GH_API_URL = self.URL

@@ -1,0 +1,77 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: GET
+    uri: https://odl.zendesk.com/api/v2/users.json?query=noreply%40zendesk.com
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA11S27LaMAz8lTN+BnKhgdM8dfoLpS+n0/EIIhIXx05lmRYY/r1ykkNpZ/IQydqV
+        dqWbigEpqPrbTZlG1evNtirXeZUvVCSratUxD6HOMt/Y1RVdg+G0Ovg+g8Fk5zIb0dkDtfoRvFML
+        5aBHAb9NAElgDybROU842MunJyp5PRACY6OBpaTMiw/LfL3Mq12xrauqzl/fpCYOzf81GynbFa91
+        UdblNtWw6VFfvUu9P/vWM0hy6MaEi9aOAfv3wPoDWNRJd7FQUyRIdMuvXwToqQVnrsDGu7GorMqP
+        m+1avCFvUw+Rt0wOSPEZyRwNShVTRBH8m5Ec2BE49WZok9Fq71l9XyiwBiRWAoYDm7MQTtDQASWi
+        I9ggTFOooUUn9sxJC4G19a1xo2lzg19eH4XLk4bInUYHe/vMZFoHHOnhRoMsa5mHcJ4x/e46E17k
+        gxfyaVRZTwzse51EP8npfYME0uwxFJvDCVkTBiYjkuQUakX4M0pCxhBHnb3ogcxZNqnlinqRJC1n
+        Te+4dAiT2NmPGIZ0SH8tOXTAOpE9sGkLWvy3jfDdZGIi4ZYekUJSNRl0Qtoj+fCkYgTyZZg9ud9l
+        M06WpweZ4XE1hGfjY/gnKdxpIcX9D5K+elVEAwAA
+    headers:
+      cache-control: ['must-revalidate, private, max-age=0']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:04:20 GMT']
+      etag: [W/"f944081ca19250969719ce1af680f5fc"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: [miss]
+      x-request-id: [dc7dbe0b-bb1e-471b-c732-ecf4bbdf6df1]
+      x-runtime: ['0.178397']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app30.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [f144c09a07834906ab99]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: GET
+    uri: https://odl.zendesk.com/api/v2/users.json?query=florp
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKi1OLSpWsoqO1VHKS60oiS9ITE9VssorzcnRUSooSi3LzC8tRhFMzi/NK1Gy
+        MqgFAEFXEaE8AAAA
+    headers:
+      cache-control: ['must-revalidate, private, max-age=0']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:04:20 GMT']
+      etag: [W/"0d9fec644c8d2302fdce202e8be00f94"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: [miss]
+      x-request-id: [cca564ff-8e8f-4c79-cc0e-ecf4bbdf6df1]
+      x-runtime: ['0.195690']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app31.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [4d6375438b6ec3b7ca50]
+    status: {code: 200, message: OK}
+version: 1

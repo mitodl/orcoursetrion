@@ -1,0 +1,291 @@
+interactions:
+- request:
+    body: '{"ticket": {"comment": {"body": "this is but a test", "public": false}}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['72']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: PUT
+    uri: https://odl.zendesk.com/api/v2/tickets/3060.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA61Uy27jNhT9FYLddABZ74dtZAIM0m2Lop1uOgkESqRlZihSJSlPHUP/3ktKkV00
+        bRczQQBDvO9zzz0XbHn7mVm8v+BRC7zHR2sHs48iRUX4wiRl5nPYqj4iA49OaTS7myiLyzh8Nkri
+        AHOK9+47wOxPy7QkonZPchQiwCdOXPL2SKRkrgAkghijRt0yZzlo1cPvFGCr5l/t/Fz0BI+tZsQy
+        WhPoEadxUm7idJNUH5NqH+f7pPodko0D/TefrNonpfOx5wHKzT2ZsXlmrUv48cgNgv9mtIggy4wF
+        V02+1P/jArC0mg+WAwDXLM+j8Wk0JwLpUYaQbNBcaW7Pa21L7GggSA3MgadZywfOJHQzN6fZHyP0
+        wbQHMSurIs3iAsCFlnpu3zAQY3gnGXsNyOMsTiBA6Y5I/kJcl96WFumurDIwdVqNw/yWFVmZ7TJA
+        WglBGqWJVa429PjpKcAHpce+tmrg7c1WB60awfqblyMxNZctpzAKhB6IMCzAdGR+c/NolnQuK26U
+        xZC6BbhUXx84E77axTMpTXZpGqfQ5ImIcdnZFCzGdBtXRZH/3Qi5DExpDqT1s8IIXHYr4kei4bMm
+        nWash/ZuhvsWpRtNJPVI7LK0yIGzZKQchp5brspdUuyqcpuWwEJ/bfOi/MX8B71X6pLRHv1KPB1e
+        t/u1h9UzS+Bs/HWaMxDOXSFuxcxFPJyhqNwsbDRRGlZhjB5+9s/+q0A/EP2FyyjJwyKMnRAMNaFU
+        M+P4nWzDJEvAkmx3YBOq9UQEywPpG81pxwL044cA/SY5HDj6FQ6DGecJfnaksPk8DbMyL3brHyAo
+        lOwW86ZKwiROt04lPJWcfMAHO80cXAi1LiBzC/AygB9U75gA1d4Gt1EULhbbt+ThaHtRLw53lJ9Q
+        K+AC3z/iF7oBpXR5H/H93XD/z+i7aLi/iyDm3inD2AjerqdCrCXt0UUvl+dZ5Ld+Q6HXQ1ifyutQ
+        PynLD3yB+Q3l1aNgUPcqva+Cu0jwLORltlwYbAH899inPaMPtOcSeeFA6oCWSdGsvSbEALwXbgzy
+        13VMY7eKq4x+ulxm8oc+RShJz6bpCf3C9mg1+ZLTBE0u+Hp9nuPQ99+tfpxO0zsEkoMaxuTSAw0f
+        5aNcfZYGTQ0K1gO4DGJu9dahfD2nIi7yOC22eZAXVZIXoDOB094iS5L4aXqapr8ANhioPysHAAA=
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:37:16 GMT']
+      etag: [W/"27afbe1460a82dff7a6877a4a1cf2d2f"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: ['invalidate, pass']
+      x-request-id: [c625cf83-4cf4-4d12-cdd0-b8ca3a61dd58]
+      x-runtime: ['0.445888']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app50.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [b7accb2ecaab6ca255ac]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"ticket": {"comment": {"body": "this is but a toast", "public": true}}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['72']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: PUT
+    uri: https://odl.zendesk.com/api/v2/tickets/3060.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA61Uy27jNhT9FYLddABZ74dtZAIM0m2Lop1uOgkESqRlZihSJSlPHUP/3ktKkV00
+        bRczQQBDvO9zzz0XbHn7mVm8v+BRC7zHR2sHs48iRUX4wiRl5nPYqj4iA49OaTS7myiLyzh8Nkri
+        AHOK9+47wOxPy7QkonZPchQiwCdOXPL2SKRkrgAkghijRt0yZzlo1cPvFGCr5l/t/Fz0BI+tZsQy
+        WhPoEadxUm7idJNUH5NqH+f7pPodko0D/TefrNonpfOx5wHKzT2ZsXlmrUv48cgNgv9mtIggy4wF
+        V02+1P/jArC0mg+WAwDXLM+j8Wk0JwLpUYaQbNBcaW7Pa21L7GggSA3MgadZywfOJHQzN6fZHyP0
+        wbQHMSurIs3iAsCFlnpu3zAQY3gnGXsNyOMsTiBA6Y5I/kJcl96WFumurDIwdVqNw/yWFVmZ7TJA
+        WglBGqWJVa429PjpKcAHpce+tmrg7c1WB60awfqblyMxNZctpzAKhB6IMCzAdGR+c/NolnQuK26U
+        xZC6BbhUXx84E77axTMpTXZpGqfQ5ImIcdnZFCzGdBtXRZH/3Qi5DExpDqT1s8IIXHYr4kei4bMm
+        nWash/ZuhvsWpRtNJPVI7LK0yIGzZKQchp5brspdUuyqcpuWwEJ/bfOi/MX8B71X6pLRHv1KPB1e
+        t/u1h9UzS+Bs/HWaMxDOXSFuxcxFPJyhqNwsbDRRGlZhjB5+9s/+q0A/EP2FyyjJwyKMnRAMNaFU
+        M+P4nWzDJEvAkmx3YBOq9UQEywPpG81pxwL044cA/SY5HDj6FQ6DGecJfnaksPk8DbMyL3brHyAo
+        lOwW86ZKwiROt04lPJWcfMAHO80cXAi1LiBzC/AygB9U75gA1d4Gt1EULhbbt+ThaHtRLw53lJ9Q
+        K+AC3z/iF7oBpXR5H/H93XD/z+i7aLi/iyDm3inD2AjerqdCrCXt0UUvl+dZ5Ld+Q6HXQ1ifyutQ
+        PynLD3yB+Q3l1aNgUPcqva+Cu0jwLORltlwYbAH899inPaMPtOcSeeFA6oCWSdGsvSbEALwXbgzy
+        13VMY7eKq4x+ulxm8oc+RShJz6bpCf3C9mg1+ZLTBE0u+Hp9nuPQ99+tfpxO0zsEkoMaxuTSAw0f
+        5aNcfZYGTQ0K1gO4DGJu9dahfD2nIi7yOC22eZAXVZIXoDOB094iS5L4aXqapr8ANhioPysHAAA=
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:37:17 GMT']
+      etag: [W/"27afbe1460a82dff7a6877a4a1cf2d2f"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: ['invalidate, pass']
+      x-request-id: [0e7c375f-3fa2-479b-c714-b8ca3a61dd58]
+      x-runtime: ['0.636538']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app15.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [bbd266e0d67ea3634042]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"ticket": {"comment": {"body": "this is but a toss", "public": true},
+      "status": "pending"}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['92']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: PUT
+    uri: https://odl.zendesk.com/api/v2/tickets/3060.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA61WbW/bNhD+KwT3ZQMUWe+yjSxAl+7DgLUb1gzDVhsCJdEyE4nU+OLOCfzfeyRl
+        x23SdsMaJHDII+8e3j33nB+wZs0d1Xj5gI3s8RJvtR7VcjYTbR/eU95SdRc2YpiRkc12ycwfV7M0
+        KqLwVgmOA8xavLTrANN/NJWc9JXd4qbvA7xjxDpvtoRzagOAI7ijhJENtZaNFAN8HgKshf+U9py9
+        fYDNRlKiaVsRwIiTKC4uouQiLm/ichlly7j8C5yZsf3UmbSczuj9COE8JmXqW9pYhzdbphD81kYj
+        gjRVGtxJ8q76whFISyPZqBkk4NHLrVHOjWSkR9LwEJyNkgnJ9P4UWxNtFFwaIbmMdzYebdjIKAdA
+        Hp+kfxuAQqXLY1qUeZJGOeQXUA1MP2MgSrGOU3q8kEVpFMMFITvC2T2xQJ0tyZNFUaZg6qQwo99L
+        87RIFykkW/Q9qYUkWtjYAPPtOsAbIc1QaTGy5qywoxR1T4eznS1RFeMNa+EpcHVDekUD3Brqiuef
+        pklnveJaaAyuG8iYGKoNo72L9uDIlMSLJIkSALkjvZnKdggmYzKPyjzPPjSCLwWvVBvSuLfCE2xy
+        jwXfEgnLinSS0gHgnT3ua4SuJeGty8QiTfIMaEtMy+DRHnJZJFm8KOblHHLsO8gXyjXNZxh+Yi8x
+        eutK4uhwrO7/7a2BagKd4xpU7YFwthFx03su4nEPQfnFxEY1S8IyjND1r27brXL0ksh3jM/iLMzD
+        yGrBWJG2lVRZisfzME5jsMTzBdh60TgiguWaDLVkbUcD9OpFgH7nDHocvYHeoMqehHPatFD5LAnT
+        IssXp5/C+uHdZL4o4zCOkrkVCkclqyCwoDvPwYlQxwLMI1sApwT4WgyWCRDt+eTWooWmxfpDhRBK
+        rfiK/wDtGfh/OPqD0jvY/bE1/n3Q/De02XLRi44pveKvfrpBv2w2rKFIbNBLBujhzM+USO4VYKuH
+        vpoCXrZsh5oeOvr7Fb5vL0B8Lc4Vvlrxy/HqKZ7L2ehNDtTZakJ2WUuwfwqdt34e4eRzBsiurKSZ
+        umcNXmppoL+J1qTZWoiTXDjqO6qe8f7YvcetRXFWCZgNHQXHU7efSaMThoqTwVZMeem0mkp3TBhV
+        HS8IEFP8JIRVtKnYr4VmkH9Pv2eGkjS9BfA4lY6zaJpOfsYlcbyYW1kFdsL5JXZu9+ik17a8U72Q
+        H0qACvTdzj2YCl1HJbb0fJwubx8evCCEpGmE4fpwWKPf6BKd9l2swwHQTQT5E0bnMSQCzUU1pXwK
+        14boRiDoQPvHbLMB0SZEKoBbY79HWiDHIjoQ1ocrfgp1PFiB4g9QV9q6uKf5ZAt8mkbrj/K9iLKv
+        ne8inZT+o3y/aAfGkRtgTzOuwn+fc+citPT6ctrdVwVfK/TtN6ecMcjRd0/LYLXhv+Z1kvU8yrMo
+        yedZkOVlnOUw7wKb9TyN42h9WB8O7wHhYOzNtgkAAA==
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:37:18 GMT']
+      etag: [W/"5320ef2467930c998da1d63dd59b6777"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: ['invalidate, pass']
+      x-request-id: [0ed0dc49-b1cd-42d8-c240-b8ca3a61dd58]
+      x-runtime: ['0.797537']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app3.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [6aa89642e11a91d0da2f]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"ticket": {"comment": {"body": "this is but a jest", "public": false},
+      "status": "solved"}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['92']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: PUT
+    uri: https://odl.zendesk.com/api/v2/tickets/3060.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA61VW4/jNBT+K5Z5WaRM7mnaahhpNbyCECwv7IwiN3ZTzzp28KVLp8p/59hJ0y47
+        wANUlaL4XH3O9305Y8vbT8zi7Rk7LfAWH6wdzDZJFBXxK5OUmU9xq/qEDDw55snkbpIiXaXxi1ES
+        R5hTvPXvEWZ/WKYlEY0/kk6ICB858cnbA5GS+QKQCGKMcrpl3rLXqofnGGGrpqf2fj56hMNWM2IZ
+        bQj0iPM0W92l+V1Wf8jqbVpus/o3SOYG+nc+Rb3N1t7HngYoN/Vk3O6FtT7hhwM3CP47ZxFBlhkL
+        rpp8bv7FBcbSaj5YDgO4ZnlxJqTRnAiknYwh2aC50tyeltqWWGcgyChxZNSXYy0fOJPQz9SeZr87
+        6ITpMMZiVVd5kVYwXmiq5/YNAzGGd5KxS0CZFmkGAUp3RPJX4vsMtrzKN6u6AFOnlRums6IqVsWm
+        gFkrIchOaWKVrw1dfnyO8F5p1zdWDby92eug1U6w/ubkQEzDZcspXAVC90QYFmHqWNjddDVLOp8V
+        75TFkLqFgam+2XMmQrVzwFKebfI8zaHJIxFu3toYzcZ8ndZVVX5phFwGbmn2pA13hStw2S0zPxAN
+        rw3pNGM9tHdzuf+j9E4TScMkNkVelYBa4iiHS08t16tNVm3WRZquAIeBb9OiAmf+AeALeImzh7CS
+        AIfLdv8rtXpmCRAn8NOcAHCeh7gVExbxcIKi8m5Go0nyuI5T9PhTOA5vFfqe6M9cJlkZV3HqpWBo
+        CKWaGY/wbB1nRQaWbL0Bm1BtACJYHkm/05x2LEI/vI/Qr5IDxdEvQA1mvCf4WUdh82UeF6uy2iw/
+        mKBQspvNd3UWZ2m+9joRoOQFBF7YccLgDKhlAYVfQBAC/Kh6jwSo9vZwd4oCZ7H9QiBeJoE42F40
+        s8M95UfUCmDgd0/4ld6BVvq8T/jhfnj4Ovo+GR7uE4h58NrgdoK3C1WItaQ9+OiZeQFFYes3ELoQ
+        YTmqby4FKtsxyDwT5yoygWKNJL2/u5k0yIsTO3LlTHPxH0DxPXH+WiQL0J0m96OyfM/nXb4h8NoJ
+        38JV4S+6Piv99L1YFTONYdXgv8Uh7Qm9pz2XKKgTUns0jxNNEm9i6AwE039HQGW7jmns931V64/n
+        88SwOKSI/Y3H8Rn9zLZoMYWS4whNzksMn4EpDr37ZvHjdBy/RaBraMeYnHug8ZN8kovP3KBpQCZ7
+        2CCDGEi8iLpf5ZWzVVqVaV6ty6is6qysQMwiL/BVkWXp8/g8jn8CeypMB5IHAAA=
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:37:19 GMT']
+      etag: [W/"48d93186e06c11132d8a9f86fefedb03"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: ['invalidate, pass']
+      x-request-id: [cf8079c9-52c9-4c64-cc66-b8ca3a61dd58]
+      x-runtime: ['0.787505']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app1.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [5776c98d35491d7683a0]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"ticket": {"comment": {"body": null, "public": false}, "status": "closed"}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['76']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: PUT
+    uri: https://odl.zendesk.com/api/v2/tickets/3060.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA61UW2+bMBT+K8jPBLAJEPI2da+TJq172VQhB06IW2MzX9KlVf77jk2adtIuD1sU
+        Cdnn/p3v8zNxon8AR7bPxBtJtuTg3Gy3ea4HmT2BGsA+ZL2ecj6L/Mjyxd3mZVEX2b3ViqREDGQb
+        zimB7w6M4rILV8pLmZKj4CF5f+BKQSiAiTDGam96CJa90RN+zylxevma4Beiz3jZG+AOho5jj4QV
+        tF4VbEWbW9psi/WWNl8wmZ+H3/mUzZa2wcedZiy39GT97h76kPD2IGyC/513CU8cWIeuhj92f3FB
+        WHojZicQgNcs997GNEZwmRivMkw2G6GNcKdrbcedtxjUS21hCOWgF7MAhf0s7Rn45rETMBHGsm4q
+        VhYVwotNTcL9wsCtFaMCeAlYF2VBMUCbkSvxxEOf0cYq1tZNiabRaD8vd2VV1mVbItZaSr7Thjsd
+        amOXX+9SstfGT53Ts+jf7HU2eidhenNz4LYTqhcDjoKhey4tpGTwEHe3jOb4GLKSnXYEU/cImJ66
+        vQAZqz1HLjHaMlYwbPLIpb9s7ZxejGxTNFW1/tmIuSxOafe8j7PiCEKNV8wP3OCx46MBmLC9N8P9
+        j9J7xE0/RjgvmO0MV0PEpi1ZtUYecz8IhGEZoqlbWrWbilU1MjMqMDovKvoD5a905t4d4pIiQV72
+        /a9im8BxlFJUrD0hBYMykakLO8l8wqJqdeGnzVnWZEVy8zFex1OVvOfmUaicrrMqK8LjMHd8GAzY
+        wHm6yWhJ0UI3Ldqk7iM10XLDp50Rwwhp8uFdmnxWAkWffEKxgA2e6Of8gFxYs6ys11V7/SGCUqvx
+        Yl41NKMF24SXI5IrPCl4gOPCygvFrguowwLi00Bu8IkaAYtdWPeq0MjPTvEpuNlFwEHZcBTa2+7F
+        32p5REWf787nHxtpbmRYBQAA
+    headers:
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:37:19 GMT']
+      etag: [W/"5c0f6c4d4ac8bd2ad2bef5a7ffebeb7f"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: ['invalidate, pass']
+      x-request-id: [0b1a3951-b7d6-4491-c4c1-b8ca3a61dd58]
+      x-runtime: ['0.301142']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app47.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [e9420a95f70f930bdc53]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"ticket": {"comment": {"body": "this update is built to break", "public":
+      false}}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['83']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: PUT
+    uri: https://odl.zendesk.com/api/v2/tickets/8675309.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWSi0qyi9SslIKSk3OL0rxyy9xyy/NS1HSUUpJLU4uyiwoyczPA0oDJRTSwDK1
+        AHKmUTI0AAAA
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:37:19 GMT']
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: ['invalidate, pass']
+      x-request-id: [c64acdc7-1a65-476b-c751-b8ca3a61dd58]
+      x-runtime: ['0.137097']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app19.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [54ca5abdece65ee19517]
+    status: {code: 404, message: Not Found}
+version: 1

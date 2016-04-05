@@ -1,0 +1,86 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: GET
+    uri: https://odl.zendesk.com/api/v2/groups.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA52V3YubQBTF/5Uwz5k4947jx7wVNg+Fli2tD2VLWSTOZm3VET9C6JL/vTcxK6gJ
+        6EJePB7jz8M9d97YvrJtWTP96421VcY0e22astaOY5Ns888Uian/bnY2d+IydQ7odH4HRYgSlNj8
+        qW3B1ixNmH7X1qyIc0N/9SnJ0/PNxGSmMeR4ibParNmuMjFdP8cNmVCAy4XkQkWgtAKNwRM905bJ
+        bU+gySbhiZ3WC5FBQgiuO0C+aj3ygzk8UhyzmEPCjlBoRb/wDvPIs5gZQUrhD2O+aj1zYg52FrPi
+        IuQgIkDtokb3FvPUs5gZfBQCRzl3Ws+8jeaETDCSgxeB1NLT6uZgTD3LgT0VKH8E3Gk98NfP0XFl
+        i5VJfs6YDoJCDn4EAbVCC5rW6URPPYvBzyX0gmkJSRuA8x9tWdqqmUHed/HSM+HdIicPzTVGSGX1
+        tUtztJgc0EffG0XeaT15njZHXnfkPJ6/SwIOcGZTSuO9Xo48y/ml7497CZ3W8z8+fFlti31aGFOl
+        xX5e+B0YtdPXEu+EH3DESIhLJ+gDPwDvKleMF+FF6+G/VXbX2Mokq+0xzuex03KhrhJ4qEHeYR95
+        PsAeCMDhyIO8aD37d1OniSmaNM7mgVPoMgJXn9lvdpUmfuRZDC6V9GQoB6fPVevBG1PP6ajiQNuF
+        9nigXdDizloce06/6T3m2DyX8Z5O56LNsjUrK3NIbVsPxJ1tCzqaAU7/AaXBRd0gCAAA
+    headers:
+      cache-control: ['must-revalidate, private, max-age=0']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:04:19 GMT']
+      etag: [W/"8e90f6afa6e02f7b820512fe8afe32c5"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: [miss]
+      x-request-id: [75c2ddc8-5b26-49ba-c99d-ecf4bbdf7c51]
+      x-runtime: ['0.160056']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app3.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [58cb1b673b242751c117]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.5 Darwin/14.5.0]
+    method: GET
+    uri: https://odl.zendesk.com/api/v2/groups.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA52V3YubQBTF/5Uwz5k4947jx7wVNg+Fli2tD2VLWSTOZm3VET9C6JL/vTcxK6gJ
+        6EJePB7jz8M9d97YvrJtWTP96421VcY0e22astaOY5Ns888Uian/bnY2d+IydQ7odH4HRYgSlNj8
+        qW3B1ixNmH7X1qyIc0N/9SnJ0/PNxGSmMeR4ibParNmuMjFdP8cNmVCAy4XkQkWgtAKNwRM905bJ
+        bU+gySbhiZ3WC5FBQgiuO0C+aj3ygzk8UhyzmEPCjlBoRb/wDvPIs5gZQUrhD2O+aj1zYg52FrPi
+        IuQgIkDtokb3FvPUs5gZfBQCRzl3Ws+8jeaETDCSgxeB1NLT6uZgTD3LgT0VKH8E3Gk98NfP0XFl
+        i5VJfs6YDoJCDn4EAbVCC5rW6URPPYvBzyX0gmkJSRuA8x9tWdqqmUHed/HSM+HdIicPzTVGSGX1
+        tUtztJgc0EffG0XeaT15njZHXnfkPJ6/SwIOcGZTSuO9Xo48y/ml7497CZ3W8z8+fFlti31aGFOl
+        xX5e+B0YtdPXEu+EH3DESIhLJ+gDPwDvKleMF+FF6+G/VXbX2Mokq+0xzuex03KhrhJ4qEHeYR95
+        PsAeCMDhyIO8aD37d1OniSmaNM7mgVPoMgJXn9lvdpUmfuRZDC6V9GQoB6fPVevBG1PP6ajiQNuF
+        9nigXdDizloce06/6T3m2DyX8Z5O56LNsjUrK3NIbVsPxJ1tCzqaAU7/AaXBRd0gCAAA
+    headers:
+      cache-control: ['must-revalidate, private, max-age=0']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=UTF-8]
+      date: ['Wed, 17 Feb 2016 17:04:19 GMT']
+      etag: [W/"8e90f6afa6e02f7b820512fe8afe32c5"]
+      server: [nginx]
+      strict-transport-security: [max-age=31536000;]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rack-cache: [miss]
+      x-request-id: [ca25e1fd-ab23-4c6b-cc7b-ecf4bbdf7c51]
+      x-runtime: ['0.159647']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-zendesk-api-version: [v2]
+      x-zendesk-application-version: [v3.67.4]
+      x-zendesk-origin-server: [app6.pod4.sac1.zdsys.com]
+      x-zendesk-request-id: [4ee4156a73788a059eda]
+    status: {code: 200, message: OK}
+version: 1

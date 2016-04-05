@@ -42,7 +42,7 @@ def create_export_repo(course, term, description=None):
     github = GitHub(config.ORC_GH_API_URL, config.ORC_GH_OAUTH2_TOKEN)
     repo_name = '{prefix}-{course}-{term}'.format(
         prefix=config.ORC_COURSE_PREFIX,
-        course=course.replace('.', ''),
+        course=course.replace('.', '-'),
         term=term
     )
     repo = github.create_repo(config.ORC_STUDIO_ORG, repo_name, description)
@@ -94,7 +94,7 @@ def rerun_studio(course, term, new_term, description=None):
     # Find and clean up the old
     repo_name = '{prefix}-{course}-{term}'.format(
         prefix=config.ORC_COURSE_PREFIX,
-        course=course.replace('.', ''),
+        course=course.replace('.', '-'),
         term=term
     )
     github.delete_web_hooks(config.ORC_STUDIO_ORG, repo_name)
@@ -102,7 +102,7 @@ def rerun_studio(course, term, new_term, description=None):
     # Name the new and create it
     repo_name = '{prefix}-{course}-{term}'.format(
         prefix=config.ORC_COURSE_PREFIX,
-        course=course.replace('.', ''),
+        course=course.replace('.', '-'),
         term=new_term
     )
     repo = github.create_repo(config.ORC_STUDIO_ORG, repo_name, description)
@@ -143,7 +143,7 @@ def release_studio(course, term):
     github = GitHub(config.ORC_GH_API_URL, config.ORC_GH_OAUTH2_TOKEN)
     repo_name = '{prefix}-{course}-{term}'.format(
         prefix=config.ORC_COURSE_PREFIX,
-        course=course.replace('.', ''),
+        course=course.replace('.', '-'),
         term=term
     )
     # Add the hook
@@ -194,7 +194,7 @@ def create_xml_repo(course, term, team=None, members=None, description=None):
     github = GitHub(config.ORC_GH_API_URL, config.ORC_GH_OAUTH2_TOKEN)
     repo_name = '{prefix}-{course}-{term}'.format(
         prefix=config.ORC_COURSE_PREFIX,
-        course=course.replace('.', ''),
+        course=course.replace('.', '-'),
         term=term
     )
     repo = github.create_repo(config.ORC_XML_ORG, repo_name, description)
@@ -241,7 +241,7 @@ def rerun_xml(course, term):
     github = GitHub(config.ORC_GH_API_URL, config.ORC_GH_OAUTH2_TOKEN)
     repo_name = '{prefix}-{course}-{term}'.format(
         prefix=config.ORC_COURSE_PREFIX,
-        course=course.replace('.', ''),
+        course=course.replace('.', '-'),
         term=term
     )
     return github.delete_web_hooks(config.ORC_XML_ORG, repo_name)
@@ -267,7 +267,7 @@ def release_xml(course, term):
     github = GitHub(config.ORC_GH_API_URL, config.ORC_GH_OAUTH2_TOKEN)
     repo_name = '{prefix}-{course}-{term}'.format(
         prefix=config.ORC_COURSE_PREFIX,
-        course=course.replace('.', ''),
+        course=course.replace('.', '-'),
         term=term
     )
     # Add the hook
