@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 Template class for constructing OLX courses via cookiecutter.
+
+Args:
+    course_info (dict): Contains the parameters required for the
+        `cookiecutter.json` file at https://github.com/mitodl/template-mit-demo.
+    author_type (str): A string that will declare either `xml`, `latex`, or
+        `studio`, it will check out the respective branch at
+        https://github.com/mitodl/template-mit-demo.
+
 """
 import tarfile
 import os
@@ -33,15 +41,7 @@ class TemplateCourse:
         cookiecutter("gh:itsbenweeks/template-mit-demo",  # FIX:Get on ODL repo.
                      checkout=self.author_type,
                      no_input=True,
-                     extra_context={
-                         "term": course_info['course_term'],
-                         "name": course_info['course_name'],
-                         "number": course_info['course_number'],
-                         "safe_number": course_info['course_number'].replace(".", "-"),
-                         "org": course_info['course_org'],
-                         "description": course_info['course_description'],
-                         "git_url": course_info['git_url']
-                     }
+                     extra_context=course_info
                      )
         return os.path.join(path, course_info['course_number'])
 
