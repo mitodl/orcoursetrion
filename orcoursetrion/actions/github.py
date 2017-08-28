@@ -61,6 +61,16 @@ def create_export_repo(course, term, description=None):
         path=GITIGNORE_PATH,
         contents=GITIGNORE_CONTENTS
     )
+    
+    # Add initial course.xml file
+    github.add_repo_file(
+        org=config.ORC_STUDIO_ORG,
+        repo=repo_name,
+        committer=COMMITTER,
+        message='initial commit of course.xml with term "{term}"'.format(term=term),
+        path="course.xml",
+        contents='<course url_name="{term}" org="MITx" course="{course}"/>\n'.format(term=term,course=course) 
+    )
 
     return repo
 
