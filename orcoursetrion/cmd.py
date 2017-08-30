@@ -13,8 +13,9 @@ def run_create_export_repo(args):
     """Run the create_export_repo action using args"""
     repo = actions.create_export_repo(args.course, args.term, args.description)
     print(
-        'Newly created repository for exports created at {0}'.format(
-            repo['html_url']
+        'Newly created repository for exports created at {0} ({1})'.format(
+            repo['html_url'],
+            repo['ssh_url']
         )
     )
 
@@ -24,8 +25,9 @@ def run_rerun_studio(args):
     repo = actions.rerun_studio(args.course, args.term, args.new_term)
     print(
         'Web hooks removed from old repository and newly created repository '
-        'for exports created at {0}'.format(
-            repo['html_url']
+        'for exports created at {0} ({1})'.format(
+            repo['html_url'],
+            repo['ssh_url']
         )
     )
 
@@ -42,8 +44,9 @@ def run_create_xml_repo(args):
         args.course, args.term, args.team, args.member, args.description
     )
     print(
-        'Newly created repository for XML course created at {0}'.format(
-            repo['html_url']
+        'Newly created repository for XML course created at {0} ({1})'.format(
+            repo['html_url'],
+            repo['ssh_url']
         )
     )
 
@@ -73,8 +76,7 @@ def run_put_team(args):
 
 
 def execute():
-    """Execute command line orcoursetrion actions.
-    """
+    """Execute command line orcoursetrion actions."""
     parser = argparse.ArgumentParser(
         prog='orcoursetrion',
         description=('Run an orchestrion action.\n')
@@ -93,7 +95,7 @@ def execute():
     )
     create_export_repo.add_argument(
         '-c', '--course', type=str, required=True,
-        help='Course to work on (i.e. 6.0001)'
+        help='Course to work on (i.e. 6.0001r)'
     )
     create_export_repo.add_argument(
         '-t', '--term', type=str, required=True,
@@ -104,6 +106,32 @@ def execute():
         help='Description string to set for repository'
     )
     create_export_repo.set_defaults(func=run_create_export_repo)
+
+    # Create Studio Course
+    # create_export_course = subparsers.add_parser(
+    #     'create_export_course',
+    #     help='Create a skeleton Studio export course'
+    # )
+
+    # create_export_course.add_argument(
+    #     '-c', '--course', type=str, required=True,
+    #     help='Course number to create (i.e. 6.0001r)'
+    # )
+
+    # create_export_course.add_argument(
+    #     '-t', '--term', type=str, required=True,
+    #     help='Term of the course (i.e. Spring_2030)'
+    # )
+
+    # create_export_course.add_argument(
+    #     '-n', '--name', type,str, required=True,
+    #     help='Name of the course (i.e. Introduction to Computer Science)'
+    # )
+
+    # create_export_course.add_argument(
+    #     '-d', '--description', type=str,
+    #     help='Description string for students to see on find courses page'
+    # )
 
     # Rerun Studio Course
     rerun_studio = subparsers.add_parser(

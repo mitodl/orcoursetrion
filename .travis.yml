@@ -8,3 +8,8 @@ script:
     - tox
 after_success: 
     coveralls
+env:
+    global:
+        -ORC_ZD_API_URL='https://localhost/api/v2/'
+        -ORC_ZD_EMAIL='noreply@zendesk.com'
+        -ORC_ZD_AUTH_TOKEN='abc123'

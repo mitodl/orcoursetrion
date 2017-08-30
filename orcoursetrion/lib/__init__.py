@@ -11,6 +11,15 @@ from orcoursetrion.lib.github import (
     GitHubNoTeamFound
 )
 
+from orcoursetrion.lib.zendesk import (
+    ZenDesk,
+    ZenDeskException,
+    ZenDeskUnknownError,
+    ZenDeskNoUserFound,
+    ZenDeskNoGroupFound,
+    ZenDeskNoTicketFound
+)
+
 __all__ = [
     'GitHub',
     'GitHubException',
@@ -18,4 +27,10 @@ __all__ = [
     'GitHubRepoDoesNotExist',
     'GitHubUnknownError',
     'GitHubNoTeamFound',
+    'ZenDesk',
+    'ZenDeskException',
+    'ZenDeskUnknownError',
+    'ZenDeskNoUserFound',
+    'ZenDeskNoGroupFound',
+    'ZenDeskNoTicketFound'
 ]
