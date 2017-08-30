@@ -10,9 +10,10 @@ import semantic_version
 class TestCore(unittest.TestCase):
     """Test common and core components to the package.
     """
+    # pylint: disable=too-few-public-methods
 
-    def test_version(self):
+    @staticmethod
+    def test_version():
         """Validate version matches proper format"""
-        # Will raise ValueError if not a semantic version
         import orcoursetrion
         semantic_version.Version(orcoursetrion.VERSION)

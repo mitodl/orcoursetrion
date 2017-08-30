@@ -6,6 +6,7 @@ from orcoursetrion.lib.github import (
     GitHub,
     GitHubException,
     GitHubRepoExists,
+    GitHubRepoDoesNotExist,
     GitHubUnknownError,
     GitHubNoTeamFound
 )
@@ -14,6 +15,7 @@ __all__ = [
     'GitHub',
     'GitHubException',
     'GitHubRepoExists',
+    'GitHubRepoDoesNotExist',
     'GitHubUnknownError',
     'GitHubNoTeamFound',
 ]
