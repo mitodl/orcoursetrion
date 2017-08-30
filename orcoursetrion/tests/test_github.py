@@ -373,7 +373,7 @@ class TestGithub(TestGithubBase):
         self.addCleanup(shutil.rmtree, tmp_dir_dst)
 
         # Add cleanup to return to where we came from
-        cwd = unicode(sh.pwd().rstrip('\n'))
+        cwd = unicode(sh.pwd().rstrip('\n'))  # pylint: disable=not-callable
 
         self.addCleanup(sh.cd, cwd)
 

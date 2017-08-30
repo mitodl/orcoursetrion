@@ -436,7 +436,7 @@ class GitHub(object):
         # pylint: disable=no-member
 
         # Grab current working directory so we return after we are done
-        cwd = unicode(sh.pwd().rstrip('\n'))
+        cwd = unicode(sh.pwd().rstrip('\n'))  # pylint: disable=not-callable
         tmp_dir = tempfile.mkdtemp(prefix='orc_git')
         try:
             sh.cd(tmp_dir)
