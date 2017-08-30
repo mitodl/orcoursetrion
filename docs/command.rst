@@ -16,7 +16,7 @@ repo that it just created for you.
 
 
 Available Actions
-=================
+~~~~~~~~~~~~~~~~~
 
 :create_export_repo:
 
@@ -24,10 +24,41 @@ Available Actions
    from :py:attr:`~orcoursetrion.config.ORC_STUDIO_DEPLOY_TEAM` added to
    the repository.
 
+:rerun_studio:
+
+   This will remove all Web hooks from the course specified by
+   ``term`` and then create a new repo with the ``new_term``, along
+   with the :py:attr:`~orcoursetrion.config.ORC_STUDIO_DEPLOY_TEAM` added.
+
+:release_studio:
+
+   This will add the production git Web hook to the course specified
+   with :py:attr:`~orcoursetrion.config.ORC_PRODUCTION_GITRELOAD`.
+
 :create_xml_repo:
 
    This will create a new repository with the
    :py:attr:`~orcoursetrion.config.ORC_XML_DEPLOY_TEAM` and a command
    line specified team added to repository.  It will also set up a git
    hook to the URL specified with
-   :py:attr:`~orcoursetrion.config.ORC_STAGING_GITRELOAD`.
+   :py:attr:`~orcoursetrion.config.ORC_STAGING_GITRELOAD`. The
+   membership of the team can also be specified, and will replace the
+   existing membership of the team if it already exists.
+
+:rerun_xml:
+
+   This will rerun an XML course.  Currently this will just remove any
+   Web hooks that are currently attached to the repository.
+
+:release_xml:
+
+   This will add the production git Web hook to the course specified
+   with :py:attr:`~orcoursetrion.config.ORC_PRODUCTION_GITRELOAD`.
+
+:put_team:
+
+   This will create or update a team specified in the specified
+   organization.  If the team doesn't exist, there is an option to
+   give the team either push or pull access, otherwise the
+   ``read_only`` flag is ignored.  It optionally takes a list of
+   members of the team that should replace the existing team.
