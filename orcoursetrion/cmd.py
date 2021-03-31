@@ -2,7 +2,7 @@
 """
 Command line interface to orchestrion
 """
-from __future__ import print_function
+
 import argparse
 
 
@@ -222,4 +222,9 @@ def execute():
 
     # Run the action
     args = parser.parse_args()
-    args.func(args)
+    try:
+        func = args.func
+    except AttributeError:
+        parser.error("too few arguments")
+    func(args)
+

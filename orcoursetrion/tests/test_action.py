@@ -216,7 +216,7 @@ class TestActions(TestGithubBase):
             description=self.TEST_DESCRIPTION
         )
         self.assertItemsEqual(
-            [(unicode(x), True) for x in member_list],
+            [(str(x), True) for x in member_list],
             member_changes
         )
 
@@ -262,7 +262,7 @@ class TestActions(TestGithubBase):
             description=self.TEST_DESCRIPTION
         )
         self.assertItemsEqual(
-            [(unicode(x), True) for x in member_list],
+            [(str(x), True) for x in member_list],
             member_changes
         )
 
@@ -336,6 +336,6 @@ class TestActions(TestGithubBase):
             members=self.TEST_TEAM_MEMBERS
         )
         self.assertItemsEqual(
-            [(unicode(x), True) for x in self.TEST_TEAM_MEMBERS],
+            [(str(x), True) for x in self.TEST_TEAM_MEMBERS],
             member_changes
         )

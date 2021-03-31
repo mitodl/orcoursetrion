@@ -70,7 +70,7 @@ class TestGithub(TestGithubBase):
             status=422
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
-        with self.assertRaisesRegexp(GitHubUnknownError, re.escape(error)):
+        with self.assertRaisesRegex(GitHubUnknownError, re.escape(error)):
             # pylint: disable=protected-access
             git_hub._get_all(test_url)
 
@@ -107,12 +107,12 @@ class TestGithub(TestGithubBase):
         git_hub.add_web_hook(self.ORG, self.TEST_REPO, 'http://fluff')
 
         # Setup for failure mode
-        error_body = json.dumps({u'message': u'Validation Failed'})
+        error_body = json.dumps({'message': 'Validation Failed'})
         self.register_hook_create(
             body=error_body,
             status=422
         )
-        with self.assertRaisesRegexp(GitHubUnknownError, error_body):
+        with self.assertRaisesRegex(GitHubUnknownError, error_body):
             git_hub.add_web_hook(self.ORG, self.TEST_REPO, 'http://fluff')
 
     @httpretty.activate
@@ -152,7 +152,7 @@ class TestGithub(TestGithubBase):
         )
         # Fail the deletion
         self.register_hook_delete(status=422)
-        with self.assertRaisesRegexp(GitHubUnknownError, ''):
+        with self.assertRaisesRegex(GitHubUnknownError, ''):
             git_hub.delete_web_hooks(self.ORG, self.TEST_REPO)
 
     @httpretty.activate
@@ -193,7 +193,7 @@ class TestGithub(TestGithubBase):
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
         # See how we handle no teams
-        with self.assertRaisesRegexp(
+        with self.assertRaisesRegex(
             GitHubUnknownError,
             re.escape("No teams found in org. This shouldn't happen")
         ):
@@ -236,7 +236,7 @@ class TestGithub(TestGithubBase):
         )
 
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
-        with self.assertRaisesRegexp(GitHubUnknownError, json.dumps({
+        with self.assertRaisesRegex(GitHubUnknownError, json.dumps({
             "message": "Validation Failed",
         })):
             git_hub.add_team_repo(self.ORG, self.TEST_REPO, self.TEST_TEAM)
@@ -280,7 +280,7 @@ class TestGithub(TestGithubBase):
             self.ORG, 'New Team', True, self.TEST_TEAM_MEMBERS
         )
         self.assertItemsEqual(
-            [(unicode(x), True) for x in self.TEST_TEAM_MEMBERS],
+            [(str(x), True) for x in self.TEST_TEAM_MEMBERS],
             member_changes
         )
 
@@ -318,7 +318,7 @@ class TestGithub(TestGithubBase):
             partial(self.callback_team_create, status_code=422)
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
-        with self.assertRaisesRegexp(
+        with self.assertRaisesRegex(
             GitHubUnknownError, json.dumps({'id': 2})
         ):
             git_hub.put_team(
@@ -334,7 +334,7 @@ class TestGithub(TestGithubBase):
             partial(self.callback_team_membership, success=False)
         )
         git_hub = GitHub(self.URL, self.OAUTH2_TOKEN)
-        with self.assertRaisesRegexp(
+        with self.assertRaisesRegex(
             GitHubUnknownError, '^Failed to add or remove.+$'
         ):
             git_hub.put_team(self.ORG, self.TEST_TEAM, True, [])
@@ -373,7 +373,7 @@ class TestGithub(TestGithubBase):
         self.addCleanup(shutil.rmtree, tmp_dir_dst)
 
         # Add cleanup to return to where we came from
-        cwd = unicode(sh.pwd().rstrip('\n'))
+        cwd = str(sh.pwd().rstrip('\n'))
 
         self.addCleanup(sh.cd, cwd)
 

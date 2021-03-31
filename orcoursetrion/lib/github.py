@@ -274,10 +274,10 @@ class GitHub(object):
         # merge the dictionary of usernames dict with True to add,
         # False to remove.
         membership_dict = dict(
-            chain(remove_members.items(), add_members.items())
+            chain(list(remove_members.items()), list(add_members.items()))
         )
         # Now do the adds and removes of membership to sync them
-        for member, add in membership_dict.items():
+        for member, add in list(membership_dict.items()):
             url = '{url}teams/{id}/memberships/{member}'.format(
                 url=self.api_url,
                 id=team_dict['id'],
@@ -436,7 +436,7 @@ class GitHub(object):
         # pylint: disable=no-member
 
         # Grab current working directory so we return after we are done
-        cwd = unicode(sh.pwd().rstrip('\n'))
+        cwd = str(sh.pwd().rstrip('\n'))
         tmp_dir = tempfile.mkdtemp(prefix='orc_git')
         try:
             sh.cd(tmp_dir)
@@ -502,7 +502,7 @@ class GitHub(object):
         payload = {
             'message': message,
             'committer': committer,
-            'content': base64.b64encode(contents).decode('ascii'),
+            'content': base64.b64encode(contents.encode("utf-8")).decode('ascii'),
         }
         response = self.session.put(url, json=payload)
         if response.status_code != 201:

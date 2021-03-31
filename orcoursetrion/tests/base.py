@@ -89,7 +89,7 @@ class TestGithubBase(unittest.TestCase):
                 'name': 'Other Team'
             },
         ]
-        current_page = request.querystring.get('page', [u'1'])
+        current_page = request.querystring.get('page', ['1'])
         current_page = int(current_page[0])
         if current_page == 2:
             body = page2
@@ -139,7 +139,7 @@ class TestGithubBase(unittest.TestCase):
         )
         json_body = json.loads(request.body)
         for item in ['name', 'permission']:
-            self.assertTrue(item in json_body.keys())
+            self.assertTrue(item in list(json_body.keys()))
         if read_only:
             self.assertEqual(json_body['permission'], 'pull')
         else:

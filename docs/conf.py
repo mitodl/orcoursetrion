@@ -37,8 +37,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Orcoursetrion'
-copyright = u'2015, MIT Office of Digital Learning'
+project = 'Orcoursetrion'
+copyright = '2015, MIT Office of Digital Learning'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -84,8 +84,8 @@ htmlhelp_basename = 'Orcoursetriondoc'
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    ('index', 'Orcoursetrion.tex', u'Orcoursetrion Documentation',
-     u'MIT Office of Digital Learning', 'manual'),
+    ('index', 'Orcoursetrion.tex', 'Orcoursetrion Documentation',
+     'MIT Office of Digital Learning', 'manual'),
 ]
 
 # -- Options for manual page output ---------------------------------------
@@ -93,8 +93,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'orcoursetrion', u'Orcoursetrion Documentation',
-     [u'MIT Office of Digital Learning'], 1)
+    ('index', 'orcoursetrion', 'Orcoursetrion Documentation',
+     ['MIT Office of Digital Learning'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -108,8 +108,8 @@ man_show_urls = True
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        'index', 'Orcoursetrion', u'Orcoursetrion Documentation',
-        u'MIT Office of Digital Learning', 'Orcoursetrion',
+        'index', 'Orcoursetrion', 'Orcoursetrion Documentation',
+        'MIT Office of Digital Learning', 'Orcoursetrion',
         'Automatic Course Provisioning.',
         'Miscellaneous'
     ),
@@ -119,10 +119,10 @@ texinfo_documents = [
 # -- Options for Epub output ----------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'Orcoursetrion'
-epub_author = u'MIT Office of Digital Learning'
-epub_publisher = u'MIT Office of Digital Learning'
-epub_copyright = u'2015, MIT Office of Digital Learning'
+epub_title = 'Orcoursetrion'
+epub_author = 'MIT Office of Digital Learning'
+epub_publisher = 'MIT Office of Digital Learning'
+epub_copyright = '2015, MIT Office of Digital Learning'
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['search.html']

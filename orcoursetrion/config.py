@@ -58,7 +58,7 @@ def configure():
         primary_config = os.environ
         fallback_config = os.environ
 
-    for key, default_value in CONFIG_KEYS.items():
+    for key, default_value in list(CONFIG_KEYS.items()):
         value = primary_config.get(
             key,
             fallback_config.get(key, default_value)
