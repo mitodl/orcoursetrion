@@ -43,11 +43,30 @@ CONFIG_KEYS = {
 
 def configure():
     """
-    Configure the application using os.environ.
+    Configure the application using a three way try for settings.
     """
-    config = os.environ
-    for key, default_value in list(CONFIG_KEYS.items()):        
-        value = config.get(key,default_value)
-        globals()[key] = value
+    prefer_django = True
+    try:
+        from django.conf import settings
+    except ImportError:
+        prefer_django = False
+
+    if prefer_django:
+        primary_config = settings
+        fallback_config = os.environ
+    else:
+        primary_config = os.environ
+        fallback_config = os.environ
+    try:
+        for key, default_value in list(CONFIG_KEYS.items()):
+            value = primary_config.get(
+                key,
+                fallback_config.get(key, default_value)
+            )
+            globals()[key] = value
+    except:
+        for key, default_value in list(CONFIG_KEYS.items()):        
+            value = fallback_config.get(key,default_value)
+            globals()[key] = value
 
 configure()
