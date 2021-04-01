@@ -1,6 +1,10 @@
 Release Notes
 =============
 
+Version 0.3.0
+-------------
+- upgrade to python3
+
 Version 0.2.1
 -------------
 
