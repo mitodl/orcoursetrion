@@ -25,7 +25,7 @@ zendesk.
 Quick Start
 ===========
 
-To install the latest release, run ``pip install orcoursetrion``.
+To install the latest release from this branch, run ``pip3 install git+https://github.com/mitodl/orcoursetrion.git@python_3_upgrade``.
 
 If you want to be on the development edge (generally stable), clone
 the repository, and run ``pip install .`` or just install directory

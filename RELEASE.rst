@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+Version 0.3.1
+-------------
+- add content_type to webhook to allow "json" in ``add_web_hook``
+- add secret to webhook to allow "json" in ``add_web_hook``
+
 Version 0.3.0
 -------------
 - upgrade to python3

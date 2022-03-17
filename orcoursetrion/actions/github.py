@@ -158,7 +158,7 @@ def release_studio(course, term):
     )
     # Add the hook
     github.add_web_hook(
-        config.ORC_STUDIO_ORG, repo_name, config.ORC_PRODUCTION_GITRELOAD
+        config.ORC_STUDIO_ORG, repo_name, config.ORC_PRODUCTION_GITRELOAD, config.ORC_HOOK_TYPE, config.ORC_PRODUCTION_SECRET
     )
 
 
@@ -223,7 +223,7 @@ def create_xml_repo(course, term, team=None, members=None, description=None):
 
     # Add the hook
     github.add_web_hook(
-        config.ORC_XML_ORG, repo_name, config.ORC_STAGING_GITRELOAD
+        config.ORC_XML_ORG, repo_name, config.ORC_STAGING_GITRELOAD, config.ORC_HOOK_TYPE, config.ORC_STAGING_SECRET
     )
     return repo
 
@@ -282,7 +282,7 @@ def release_xml(course, term):
     )
     # Add the hook
     github.add_web_hook(
-        config.ORC_XML_ORG, repo_name, config.ORC_PRODUCTION_GITRELOAD
+        config.ORC_XML_ORG, repo_name, config.ORC_PRODUCTION_GITRELOAD, config.ORC_HOOK_TYPE, config.ORC_PRODUCTION_SECRET
     )
 
 
