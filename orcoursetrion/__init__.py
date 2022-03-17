@@ -3,4 +3,4 @@
 Automation kit for provisioning courses for MITx platform
 """
 
-VERSION = '0.3.0'
+VERSION = '0.3.1'

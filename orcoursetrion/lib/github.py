@@ -326,7 +326,7 @@ class GitHub(object):
         if response.status_code != 204:
             raise GitHubUnknownError(response.text)
 
-    def add_web_hook(self, org, repo, url):
+    def add_web_hook(self, org, repo, url, content_type, secret):
         """Adds an active hook to a github repository.
 
         This utilizes
@@ -356,6 +356,8 @@ class GitHub(object):
             'active': True,
             'config': {
                 'url': url,
+                'content_type': content_type,
+                'secret': secret
             }
         }
         response = self.session.post(hook_url, json=payload)

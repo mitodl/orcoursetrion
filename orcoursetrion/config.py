@@ -36,10 +36,16 @@ CONFIG_KEYS = {
     # Web hook URL including basic auth for course development LMS
     'ORC_STAGING_GITRELOAD': None,
 
+    'ORC_STAGING_SECRET': None,
+
     # Web hook URL (including basic auth) for course production LMS
     'ORC_PRODUCTION_GITRELOAD': None,
-}
 
+    'ORC_PRODUCTION_SECRET': None,
+
+    # Web hook content type
+    'ORC_HOOK_TYPE': 'form'
+}
 
 def configure():
     """
